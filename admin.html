@@ -136,5 +136,90 @@
       window.location.href = 'admin-giris.html';
     }
   </script>
+<!-- Kullanıcı Listesi Alanı -->
+  <div style="max-width: 800px; margin: 20px auto; background: #181818; padding: 20px; border-radius: 10px; border: 1px solid #333;">
+    <h2 style="color: #00ff88; margin-bottom: 15px;">👥 Kullanıcı Yönetim Paneli</h2>
+    <div id="kullanici-listesi-icerik" style="color: white;">Yükleniyor...</div>
+  </div>
+
+  <script type="module">
+    import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // Sayfa yüklendiğinde veritabanından kullanıcıları çek
+    const checkDb = setInterval(() => {
+      if (window.db) {
+        clearInterval(checkDb);
+        const usersRef = ref(window.db, 'users');
+
+        onValue(usersRef, (snapshot) => {
+          const data = snapshot.val();
+          const listeDiv = document.getElementById('kullanici-listesi-icerik');
+          if (!listeDiv) return;
+          
+          listeDiv.innerHTML = '';
+
+          if (!data) {
+            listeDiv.innerHTML = '<p>Henüz kayıtlı kullanıcı yok.</p>';
+            return;
+          }
+
+          Object.keys(data).forEach((userId) => {
+            const user = data[userId];
+            
+            listeDiv.innerHTML += `
+              <div style="background:#222; color:#fff; padding:15px; margin-bottom:10px; border-radius:8px; border: 1px solid #444;">
+                <p><b>ID:</b> <span style="color:#aaa;">${userId}</span></p>
+                <p><b>Kullanıcı Adı:</b> <span style="color:#00ff88;">${user.username || 'Bilinmiyor'}</span></p>
+                <p><b>IP Adresi:</b> ${user.ip || 'Bilinmiyor'}</p>
+                <p><b>Durum:</b> ${user.banned ? '<span style="color:red;">🔴 Banlı</span>' : '<span style="color:lightgreen;">🟢 Aktif</span>'}</p>
+                
+                <div style="margin-top: 10px;">
+                  <button onclick="window.banla('${userId}', ${!user.banned})" style="background:${user.banned ? '#28a745' : '#dc3545'}; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer; font-weight:bold; margin-right:5px;">
+                    ${user.banned ? 'Banı Kaldır' : 'Banla'}
+                  </button>
+                  <button onclick="window.sil('${userId}')" style="background:#555; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer; font-weight:bold;">
+                    Kullanıcıyı Sil
+                  </button>
+                </div>
+              </div>
+            `;
+          });
+        });
+      }
+    }, 100);
+
+    // Banlama Fonksiyonu
+    window.banla = function(userId, durum) {
+      const userRef = ref(window.db, 'users/' + userId);
+      update(userRef, { banned: durum });
+    }
+
+    // Silme Fonksiyonu
+    window.sil = function(userId) {
+      if(confirm("Bu kullanıcıyı veritabanından tamamen silmek istediğine emin misin?")) {
+        const userRef = ref(window.db, 'users/' + userId);
+        remove(userRef);
+      }
+    }
+  </script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
+      authDomain: "cynorobux.firebaseapp.com",
+      databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
+      projectId: "cynorobux",
+      storageBucket: "cynorobux.firebasestorage.app",
+      messagingSenderId: "854181611047",
+      appId: "1:854181611047:web:db37f6a281bca890d67002",
+      measurementId: "G-8PQFNEH1F3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    window.db = db; 
+  </script>
 </body>
 </html>
