@@ -12,7 +12,7 @@
       <div style="margin-bottom: 24px;">
         <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">ANINDA OTOMATİK SİSTEM</span>
         <h1 style="font-size: 30px; font-weight: 800;">➕ Gamepass ile Robux Yatır (Min 50 R$)</h1>
-        <p style="color: var(--text-muted); margin-top: 6px;">Roblox hesabındaki Robux'ları CynoRobux Gamepass'leri veya esnek kaydırmalı miktar ile aktar.</p>
+        <p style="color: var(--text-muted); margin-top: 6px;">Roblox hesabındaki Robux'ları CynoRobux Gamepass'leri ile anında yatır ve %8 bonus kazan.</p>
       </div>
 
       <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; margin-bottom: 24px;">
@@ -22,25 +22,25 @@
           <div class="stat-card" style="cursor: pointer; border-color: var(--roblox-green);" onclick="setDepositAmount(50)">
             <div class="stat-label">STANDART MİN</div>
             <div class="stat-value" style="color: var(--roblox-green);">50 R$</div>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+5 R$ Bonus</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+4 R$ Bonus</div>
           </div>
 
           <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(250)">
             <div class="stat-label">OYUNCU</div>
             <div class="stat-value" style="color: var(--roblox-green);">250 R$</div>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+25 R$ Bonus</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+20 R$ Bonus</div>
           </div>
 
           <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(1000)">
             <div class="stat-label">PRO</div>
             <div class="stat-value" style="color: var(--roblox-green);">1,000 R$</div>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+120 R$ Bonus</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+80 R$ Bonus</div>
           </div>
 
           <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(5000)">
             <div class="stat-label">VIP DOMINUS</div>
             <div class="stat-value" style="color: var(--roblox-green);">5,000 R$</div>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+800 R$ Bonus</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+400 R$ Bonus</div>
           </div>
         </div>
 
@@ -80,7 +80,6 @@
       document.getElementById('deposit-input').value = amt;
       document.getElementById('selected-amt-text').textContent = amt;
       document.getElementById('gp-link').value = `https://www.roblox.com/game-pass/${amt}/Cyno-Pass-${amt}`;
-      showToast(`${amt} R$ yatırım tutarı seçildi.`);
     }
 
     function onSliderChange(val) {
@@ -99,20 +98,71 @@
       document.getElementById('selected-amt-text').textContent = num;
       document.getElementById('gp-link').value = `https://www.roblox.com/game-pass/${num}/Cyno-Pass-${num}`;
     }
+  </script>
 
-    function submitDepositRequest() {
-      const user = AppState.getUser();
-      if (!user || !user.loggedIn) {
-        showToast('Önce giriş yapmalısın!', true);
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, get, update, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
+      authDomain: "cynorobux.firebaseapp.com",
+      databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
+      projectId: "cynorobux",
+      storageBucket: "cynorobux.firebasestorage.app",
+      messagingSenderId: "854181611047",
+      appId: "1:854181611047:web:db37f6a281bca890d67002",
+      measurementId: "G-8PQFNEH1F3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.submitDepositRequest = function() {
+      const currentUser = localStorage.getItem('cynoUser');
+      if (!currentUser) {
+        alert("Önce giriş yapmalısın kanka!");
+        window.location.href = "giris.html";
         return;
       }
+
       const bonus = Math.floor(currentAmt * 0.08);
       const totalAdd = currentAmt + bonus;
-      
-      AppState.addRequest('Yatırım', `${currentAmt} R$ Gamepass Yatırım Talebi (+${bonus} Bonus)`, totalAdd);
-      AppState.addBalance(totalAdd, `Gamepass Yatırımı (${currentAmt} R$)`);
-      
-      showToast(`Yatırım talebiniz admin paneline iletildi! +${totalAdd} R$ bakiye yüklendi.`);
+
+      const userRef = ref(db, 'users/' + currentUser);
+
+      get(userRef).then((snapshot) => {
+        if (!snapshot.exists()) {
+          alert("Kullanıcı veritabanında bulunamadı!");
+          return;
+        }
+
+        const userData = snapshot.val();
+        const yeniBakiye = (Number(userData.bakiye) || 0) + totalAdd;
+
+        // Kullanıcının bakiyesini güncelle
+        update(userRef, { bakiye: yeniBakiye }).then(() => {
+          // LocalStorage güncelle
+          localStorage.setItem('cynoBakiye', yeniBakiye);
+
+          // Yatırım talebini Firebase'e log olarak kaydet
+          const requestsRef = ref(db, 'requests');
+          const yeniTalepRef = push(requestsRef);
+          set(yeniTalepRef, {
+            username: currentUser,
+            tur: 'Yatırım',
+            detay: `${currentAmt} R$ Gamepass Yatırım (+${bonus} R$ Bonus)`,
+            tutar: totalAdd,
+            tarih: new Date().toISOString()
+          });
+
+          alert(`Yatırım talebin onaylandı! +${totalAdd} R$ (Bonus dahil) hesabına yüklendi 🎉`);
+          window.location.reload();
+        });
+      }).catch((error) => {
+        console.error("Yatırım hatası:", error);
+        alert("İşlem sırasında bir hata oluştu.");
+      });
     }
   </script>
 </body>
