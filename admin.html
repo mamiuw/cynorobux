@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CynoRobux Admin Paneli</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container" style="max-width: 1200px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">YÖNETİCİ KONTROL MERKEZİ</span>
+        <h1 style="font-size: 28px; font-weight: 800;">🛡️ CynoRobux Admin Paneli</h1>
+        <p style="color: var::text-muted); font-size: 14px;">Hoş geldin <span id="admin-name-span" style="color: var(--roblox-green); font-weight: 700;">Admin</span>. Kullanıcı talepleri ve sistem ayarları.</p>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <a href="index.html" class="btn btn-outline">Ana Siteye Git</a>
+        <button onclick="adminLogout()" class="btn btn-danger">Çıkış Yap</button>
+      </div>
+    </div>
+
+    <!-- Discord Link Ayarla -->
+    <div style="background: var(--bg-panel); border: 1px solid var::border-color); border-radius: 18px; padding: 22px; margin-bottom: 24px;">
+      <h3 style="font-size: 16px; margin-bottom: 12px;">💬 Discord Sunucu Linkini Güncelle</h3>
+      <div style="display: flex; gap: 12px;">
+        <input type="url" id="discord-input-url" class="form-control" placeholder="https://discord.gg/senin-sunucun" style="flex: 1;">
+        <button onclick="saveDiscordLink()" class="btn btn-primary">Kaydet</button>
+      </div>
+    </div>
+
+    <!-- Gelen Talepler -->
+    <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 18px; padding: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 style="font-size: 18px; font-weight: 800;">📥 Kullanıcı Yatırım ve Çekim Talepleri</h3>
+        <button onclick="clearRequests()" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">Tümünü Temizle</button>
+      </div>
+
+      <table class="feed-table">
+        <thead>
+          <tr>
+            <th>Talep ID</th>
+            <th>Kullanıcı</th>
+            <th>İşlem Türü</th>
+            <th>Detay / Link</th>
+            <th>Miktar</th>
+            <th>Durum</th>
+            <th>Tarih</th>
+            <th>İşlem</th>
+          </tr>
+        </thead>
+        <tbody id="admin-req-tbody">
+          <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Henüz kullanıcı talebi bulunmuyor.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Check Admin Auth
+    const adminAuth = localStorage.getItem('cynorobux_admin_auth');
+    if (!adminAuth) {
+      alert('Bu sayfaya erişmek için önce admin girişi yapmalısınız!');
+      window.location.href = 'admin-giris.html';
+    } else {
+      const authObj = JSON.parse(adminAuth);
+      document.getElementById('admin-name-span').textContent = authObj.user.toUpperCase();
+    }
+
+    // Load Discord link
+    const savedDiscord = localStorage.getItem('cynorobux_discord');
+    if(savedDiscord) {
+      document.getElementById('discord-input-url').value = savedDiscord;
+    }
+
+    function saveDiscordLink() {
+      const url = document.getElementById('discord-input-url').value.trim();
+      if(!url) {
+        showToast('Geçerli bir URL girin', true);
+        return;
+      }
+      localStorage.setItem('cynorobux_discord', url);
+      showToast('Discord sunucu bağlantısı başarıyla güncellendi!');
+    }
+
+    function renderAdminRequests() {
+      const reqs = JSON.parse(localStorage.getItem('cynorobux_requests') || '[]');
+      const tbody = document.getElementById('admin-req-tbody');
+
+      if (reqs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Henüz kullanıcı talebi bulunmuyor.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = reqs.map((r, idx) => `
+        <tr>
+          <td><code>${r.id}</code></td>
+          <td><strong>${r.username}</strong></td>
+          <td><span class="official-badge">${r.type}</span></td>
+          <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${r.detail}">${r.detail}</td>
+          <td style="font-family:'JetBrains Mono'; font-weight:700; color:var(--roblox-green);">${r.amount}</td>
+          <td><span style="color: ${r.status === 'Onaylandı' ? 'var(--roblox-green)' : (r.status === 'Reddedildi' ? 'var(--danger)' : 'var(--warning)')}; font-weight:700;">${r.status}</span></td>
+          <td style="color: var(--text-muted); font-size:12px;">${r.date}</td>
+          <td>
+            ${r.status === 'Beklemede' ? `
+              <button onclick="updateReqStatus(${idx}, 'Onaylandı')" class="btn btn-primary" style="padding: 4px 10px; font-size: 11px; margin-right: 4px;">Onayla</button>
+              <button onclick="updateReqStatus(${idx}, 'Reddedildi')" class="btn btn-danger" style="padding: 4px 10px; font-size: 11px;">Reddet</button>
+            ` : `<span style="font-size: 12px; color: var(--text-muted);">İşlendi</span>`}
+          </td>
+        </tr>
+      `).join('');
+    }
+    renderAdminRequests();
+
+    function updateReqStatus(index, newStatus) {
+      const reqs = JSON.parse(localStorage.getItem('cynorobux_requests') || '[]');
+      if(reqs[index]) {
+        reqs[index].status = newStatus;
+        localStorage.setItem('cynorobux_requests', JSON.stringify(reqs));
+        renderAdminRequests();
+        showToast(`Talep durumu değiştirildi: ${newStatus}`);
+      }
+    }
+
+    function clearRequests() {
+      if(confirm('Tüm talepleri silmek istediğinize emin misiniz?')) {
+        localStorage.removeItem('cynorobux_requests');
+        renderAdminRequests();
+        showToast('Tüm talepler temizlendi.');
+      }
+    }
+
+    function adminLogout() {
+      localStorage.removeItem('cynorobux_admin_auth');
+      window.location.href = 'admin-giris.html';
+    }
+  </script>
+</body>
+</html>

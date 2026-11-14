@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robux Yazı-Tura — CynoRobux</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div style="margin-bottom: 18px;">
+      <a href="oyunlar.html" style="color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600;">← Oyunlara Dön</a>
+    </div>
+
+    <div class="game-layout">
+      <div class="control-panel">
+        <h2 style="font-size: 20px; margin-bottom: 18px;">🪙 Robux Yazı-Tura</h2>
+
+        <div class="form-group">
+          <label>Yatırılacak Robux (R$)</label>
+          <input type="number" id="cf-bet" class="form-control" value="100" min="50">
+        </div>
+
+        <div class="form-group">
+          <label>Tarafını Seç (1.85x Kazanç)</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button type="button" id="side-green" onclick="selectSide('green')" class="btn btn-primary">🟩 Yeşil Robux</button>
+            <button type="button" id="side-black" onclick="selectSide('black')" class="btn btn-outline">⬛ Siyah Blox</button>
+          </div>
+        </div>
+
+        <button onclick="flipCoin()" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; margin-top: 10px;">
+          🪙 Parayı At
+        </button>
+      </div>
+
+      <div class="arena-panel">
+        <div id="coin-visual" style="width: 130px; height: 130px; border-radius: 50%; background: linear-gradient(135deg, var(--roblox-green), var(--roblox-green-dark)); display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 800; color: #050807; box-shadow: 0 0 35px var(--roblox-green-glow); transition: transform 0.6s;">
+          R$
+        </div>
+        <h3 id="cf-status" style="font-size: 22px; margin-top: 24px;">Tarafını Seç ve Atış Yap</h3>
+        <p id="cf-sub" style="color: var(--text-muted); font-size: 14px; margin-top: 6px;">Doğru bilirsen yatırdığın Robux 1.85x katlanır! (%46 Kazanma Şansı)</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    renderLayout('oyunlar');
+    let chosenSide = 'green';
+    let flipping = false;
+
+    function selectSide(side) {
+      chosenSide = side;
+      document.getElementById('side-green').className = side === 'green' ? 'btn btn-primary' : 'btn btn-outline';
+      document.getElementById('side-black').className = side === 'black' ? 'btn btn-primary' : 'btn btn-outline';
+    }
+
+    function flipCoin() {
+      if (flipping) return;
+      const user = AppState.getUser();
+      if (!user || !user.loggedIn) {
+        showToast('Oynamak için giriş yapmalısın!', true);
+        return;
+      }
+      const bet = Number(document.getElementById('cf-bet').value);
+      if (bet < 50 || bet > user.balance) {
+        showToast('Geçersiz miktar veya yetersiz bakiye (Min: 50 R$)', true);
+        return;
+      }
+
+      AppState.addBalance(-bet, 'Robux Yazı-Tura Bahis');
+      flipping = true;
+
+      const coin = document.getElementById('coin-visual');
+      coin.style.transform = 'rotateY(720deg) scale(1.1)';
+      document.getElementById('cf-status').textContent = 'Para Dönüyor...';
+
+      setTimeout(() => {
+        coin.style.transform = 'rotateY(0deg) scale(1)';
+        
+        // Slightly reduced win chance: 46% win rate
+        const rand = Math.random();
+        const result = rand < 0.46 ? chosenSide : (chosenSide === 'green' ? 'black' : 'green');
+
+        if (result === 'green') {
+          coin.style.background = 'linear-gradient(135deg, #00e676, #00b259)';
+          coin.style.color = '#050807';
+          coin.textContent = 'R$';
+        } else {
+          coin.style.background = 'linear-gradient(135deg, #222e29, #0e1412)';
+          coin.style.color = '#00e676';
+          coin.textContent = 'BLX';
+        }
+
+        if (result === chosenSide) {
+          const win = Math.floor(bet * 1.85);
+          AppState.addBalance(win, 'Yazı-Tura Kazancı (1.85x)');
+          document.getElementById('cf-status').innerHTML = `<span style="color:var(--roblox-green);">Kazandın! +${win} R$</span>`;
+          showToast(`Tebrikler! +${win} R$ kazandın!`);
+        } else {
+          document.getElementById('cf-status').innerHTML = `<span style="color:var(--danger);">Kaybettin! (${result === 'green' ? 'Yeşil Robux' : 'Siyah Blox'} geldi)</span>`;
+          showToast('Bu tur olmadı, tekrar dene!', true);
+        }
+        flipping = false;
+      }, 650);
+    }
+  </script>
+</body>
+</html>

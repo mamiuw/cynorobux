@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robux Crash — CynoRobux</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div style="margin-bottom: 18px;">
+      <a href="oyunlar.html" style="color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600;">← Oyunlara Dön</a>
+    </div>
+
+    <div class="game-layout">
+      <div class="control-panel">
+        <h2 style="font-size: 20px; margin-bottom: 18px;">🚀 Robux Crash</h2>
+
+        <div class="form-group">
+          <label>Yatırılacak Robux (R$)</label>
+          <input type="number" id="bet-amount" class="form-control" value="100" min="50">
+          <div class="quick-bets">
+            <button type="button" class="quick-bet-btn" onclick="setBet(540)">540 R$</button>
+            <button type="button" class="quick-bet-btn" onclick="setBet(1000)">1000 R$</button>
+            <button type="button" class="quick-bet-btn" onclick="setBet(2500)">2500 R$</button>
+            <button type="button" class="quick-bet-btn" onclick="doubleBet()">2x</button>
+          </div>
+        </div>
+
+        <button id="btn-start" onclick="startCrash()" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; margin-top: 10px;">
+          🚀 Bahis Yap ve Başlat
+        </button>
+
+        <button id="btn-cashout" onclick="cashoutCrash()" class="btn btn-primary" style="display: none; width: 100%; padding: 14px; font-size: 15px; margin-top: 10px; background: #ffa502; color: #000;">
+          💰 Bozdur (<span id="cashout-val">100</span> R$)
+        </button>
+
+        <div style="margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">SON ÇARPANLAR</div>
+          <div id="crash-history" style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <span class="official-badge">2.45x</span>
+            <span class="official-badge" style="color: var(--danger); border-color: var(--danger);">1.05x</span>
+            <span class="official-badge">4.80x</span>
+            <span class="official-badge">1.94x</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arena-panel">
+        <div id="rocket-status" style="font-size: 14px; color: var(--text-muted); font-weight: 700;">ROKET KALKIŞA HAZIR</div>
+        <div id="rocket-emoji" style="font-size: 56px; margin-top: 12px; transition: transform 0.2s;">🚀</div>
+        <div id="multiplier-display" class="crash-multiplier">1.00x</div>
+        <div id="crash-msg" style="font-size: 14px; color: var(--text-muted);">Çarpan yükselirken istediğin an bozdur!</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    renderLayout('oyunlar');
+
+    let isRunning = false;
+    let hasCasheout = false;
+    let currentMult = 1.00;
+    let crashPoint = 1.00;
+    let currentBet = 0;
+    let timer = null;
+
+    function setBet(val) {
+      if(isRunning) return;
+      document.getElementById('bet-amount').value = val;
+    }
+
+    function doubleBet() {
+      if(isRunning) return;
+      const inp = document.getElementById('bet-amount');
+      inp.value = Math.max(50, Math.floor(Number(inp.value) * 2));
+    }
+
+    function startCrash() {
+      if (isRunning) return;
+      const user = AppState.getUser();
+      if (!user || !user.loggedIn) {
+        showToast('Oynamak için önce giriş yapmalısın!', true);
+        return;
+      }
+
+      const bet = Number(document.getElementById('bet-amount').value);
+      if (bet < 50 || bet > user.balance) {
+        showToast('Geçersiz miktar veya yetersiz Robux bakiyesi (Min: 50 R$)!', true);
+        return;
+      }
+
+      // Deduct balance once safely
+      if (!AppState.addBalance(-bet, 'Robux Crash Bahis')) {
+        return;
+      }
+
+      currentBet = bet;
+      currentMult = 1.00;
+      isRunning = true;
+      hasCasheout = false;
+
+      const r = Math.random();
+      if (r < 0.15) crashPoint = 1.00;
+      else crashPoint = Math.min(80, +(1 / (1 - r * 0.90)).toFixed(2));
+
+      const disp = document.getElementById('multiplier-display');
+      disp.classList.remove('crashed');
+      disp.textContent = '1.00x';
+
+      document.getElementById('rocket-status').textContent = 'ROKET YÜKSELİYOR...';
+      document.getElementById('crash-msg').textContent = 'Patlamadan önce bozdur!';
+      document.getElementById('btn-start').style.display = 'none';
+      document.getElementById('btn-cashout').style.display = 'inline-flex';
+      document.getElementById('cashout-val').textContent = bet;
+
+      timer = setInterval(() => {
+        if (!isRunning) return;
+        currentMult = +(currentMult + 0.025 + (currentMult * 0.012)).toFixed(2);
+        disp.textContent = currentMult.toFixed(2) + 'x';
+        document.getElementById('cashout-val').textContent = Math.floor(currentBet * currentMult);
+        document.getElementById('rocket-emoji').style.transform = `translateY(-${Math.min(35, currentMult * 4)}px) scale(1.1)`;
+
+        if (currentMult >= crashPoint) {
+          endCrash(false);
+        }
+      }, 90);
+    }
+
+    function cashoutCrash() {
+      if (!isRunning || hasCasheout) return;
+      hasCasheout = true;
+      endCrash(true);
+    }
+
+    function endCrash(won) {
+      if (!isRunning) return;
+      clearInterval(timer);
+      isRunning = false;
+
+      document.getElementById('btn-start').style.display = 'inline-flex';
+      document.getElementById('btn-cashout').style.display = 'none';
+      document.getElementById('rocket-emoji').style.transform = 'translateY(0)';
+
+      const hist = document.getElementById('crash-history');
+      const badge = document.createElement('span');
+      badge.className = 'official-badge';
+
+      if (won) {
+        const winAmount = Math.floor(currentBet * currentMult);
+        AppState.addBalance(winAmount, `Crash Kazancı (${currentMult.toFixed(2)}x)`);
+        document.getElementById('rocket-status').textContent = 'BAŞARIYLA BOZDURULDU!';
+        document.getElementById('crash-msg').innerHTML = `<span style="color:var(--roblox-green); font-weight:800;">+${winAmount} R$ kazandın!</span> (Roket ${crashPoint.toFixed(2)}x'te patladı)`;
+        showToast(`Tebrikler! +${winAmount} R$ hesabına eklendi.`);
+        badge.textContent = currentMult.toFixed(2) + 'x';
+      } else {
+        const disp = document.getElementById('multiplier-display');
+        disp.textContent = crashPoint.toFixed(2) + 'x';
+        disp.classList.add('crashed');
+        document.getElementById('rocket-status').textContent = '💥 ROKET PATLADI!';
+        document.getElementById('crash-msg').textContent = `${currentBet} R$ kaybedildi. Tekrar dene!`;
+        showToast(`Roket ${crashPoint.toFixed(2)}x'te patladı!`, true);
+        badge.textContent = crashPoint.toFixed(2) + 'x';
+        badge.style.color = 'var(--danger)';
+        badge.style.borderColor = 'var(--danger)';
+      }
+      hist.prepend(badge);
+      if (hist.children.length > 6) hist.lastChild.remove();
+    }
+  </script>
+</body>
+</html>

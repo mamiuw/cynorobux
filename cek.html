@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robux Çek — CynoRobux</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div style="max-width: 780px; margin: 0 auto;">
+      <div style="margin-bottom: 24px;">
+        <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">7/24 OTOMATİK ÖDEME BOTU</span>
+        <h1 style="font-size: 30px; font-weight: 800;">💸 Kazandığın Robux'ları Çek</h1>
+        <p style="color: var(--text-muted); margin-top: 6px;">Oyunlardan katladığın Robux'ları kendi oluşturduğun Gamepass üzerinden çekim talebiyle aktar.</p>
+      </div>
+
+      <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; margin-bottom: 24px;">
+        <form onsubmit="handleWithdraw(event)">
+          <div class="form-group">
+            <label>Çekilecek Robux Miktarı (Min: 50 R$)</label>
+            <input type="number" id="wd-amount" class="form-control" placeholder="Örn: 500" min="50" required>
+          </div>
+
+          <div class="form-group">
+            <label>Kendi Roblox Gamepass Linkin</label>
+            <input type="url" id="wd-link" class="form-control" placeholder="https://www.roblox.com/game-pass/..." required>
+            <small style="color: var(--text-muted); font-size: 12px; display: block; margin-top: 6px;">
+              Not: Roblox %30 komisyonunu CynoRobux karşılar! Gamepass fiyatını çekeceğin tutar olarak ayarla.
+            </small>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15px; margin-top: 8px;">
+            🚀 Çekim Talebi Oluştur (Admin Onaylı)
+          </button>
+        </form>
+      </div>
+
+      <div style="background: var::bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px;">
+        <h3 style="font-size: 16px; margin-bottom: 12px;">📜 Çekim & İşlem Geçmişin</h3>
+        <table class="feed-table">
+          <thead>
+            <tr>
+              <th>İşlem Türü</th>
+              <th>Açıklama</th>
+              <th>Miktar</th>
+              <th>Saat</th>
+            </tr>
+          </thead>
+          <tbody id="user-history-body">
+            <tr><td colspan="4" style="color: var(--text-muted);">Giriş yaptığında işlemlerin burada görünür.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    renderLayout('cek');
+
+    function renderHistory() {
+      const user = AppState.getUser();
+      const tbody = document.getElementById('user-history-body');
+      if (!user || !user.loggedIn || !user.history) return;
+      tbody.innerHTML = user.history.map(item => `
+        <tr>
+          <td><strong>${item.type}</strong></td>
+          <td>${item.detail}</td>
+          <td style="color: ${item.amount.startsWith('+') ? 'var(--roblox-green)' : 'var(--text-main)'}; font-weight: 700;">${item.amount}</td>
+          <td style="color: var(--text-muted);">${item.date}</td>
+        </tr>
+      `).join('');
+    }
+    renderHistory();
+
+    function handleWithdraw(e) {
+      e.preventDefault();
+      const user = AppState.getUser();
+      if (!user || !user.loggedIn) {
+        showToast('Çekim yapmak için giriş yapmalısın!', true);
+        return;
+      }
+      const amt = Number(document.getElementById('wd-amount').value);
+      const link = document.getElementById('wd-link').value;
+
+      if (amt < 50 || amt > user.balance) {
+        showToast('Yetersiz Robux bakiyesi veya minimum tutar (50 R$) hatası!', true);
+        return;
+      }
+
+      AppState.addBalance(-amt, `Çekim Talebi (${link})`);
+      AppState.addRequest('Çekim', `Gamepass Çekim Talebi: ${link}`, amt);
+      renderHistory();
+      showToast(`Başarılı! ${amt} R$ çekim talebiniz admin paneline iletildi.`);
+      document.getElementById('wd-amount').value = '';
+      document.getElementById('wd-link').value = '';
+    }
+  </script>
+</body>
+</html>

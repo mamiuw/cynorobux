@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limited Kasa Açılımı — CynoRobux</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div style="margin-bottom: 18px;">
+      <a href="oyunlar.html" style="color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600;">← Oyunlara Dön</a>
+    </div>
+
+    <div class="game-layout">
+      <div class="control-panel">
+        <h2 style="font-size: 20px; margin-bottom: 14px;">📦 Roblox Limited Kasası</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+          Her kasa açılımı <strong>200 R$</strong> değerindedir. İçinden çıkan Limited eşyanın Robux değeri anında bakiyene eklenir.
+        </p>
+
+        <button id="open-case-btn" onclick="openCase()" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15px;">
+          📦 Kasayı Aç (200 R$)
+        </button>
+
+        <div style="margin-top: 22px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px;">KASA İÇERİĞİ & ÖDÜLLER</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+            <div style="display:flex; justify-content:space-between; background:var(--bg-dark); padding:8px 12px; border-radius:8px;">
+              <span>🧢 Blox Şapkası</span><strong style="color:var(--text-muted);">80 R$</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; background:var(--bg-dark); padding:8px 12px; border-radius:8px;">
+              <span>🎧 Yeşil Kulaklık</span><strong style="color:var(--text-main);">220 R$</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; background:var(--bg-dark); padding:8px 12px; border-radius:8px;">
+              <span>⚔️ Korblox Kılıcı</span><strong style="color:var(--roblox-green);">500 R$</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; background:var(--bg-dark); padding:8px 12px; border-radius:8px; border:1px solid rgba(0,230,118,0.3);">
+              <span>👑 Dominus Empyreus</span><strong style="color:var(--roblox-green);">2,000 R$</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arena-panel">
+        <div id="case-box-icon" style="font-size: 84px; transition: transform 0.3s;">📦</div>
+        <h3 id="case-result-title" style="font-size: 24px; margin-top: 18px;">Kasayı Açmaya Hazır</h3>
+        <p id="case-result-sub" style="color: var(--text-muted); font-size: 14px; margin-top: 8px;">Şansını dene ve efsanevi Limited eşyayı yakala!</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    renderLayout('oyunlar');
+    let opening = false;
+
+    const rewards = [
+      { icon: '🧢', name: 'Klasik Blox Şapkası', val: 80, weight: 48 },
+      { icon: '🎧', name: 'Neon Yeşil Kulaklık', val: 220, weight: 32 },
+      { icon: '⚔️', name: 'Korblox Kristal Kılıcı', val: 500, weight: 15 },
+      { icon: '👑', name: 'Dominus Empyreus (Efsanevi)', val: 2000, weight: 5 }
+    ];
+
+    function pickReward() {
+      const total = rewards.reduce((s, r) => s + r.weight, 0);
+      let rand = Math.random() * total;
+      for (const r of rewards) {
+        if (rand < r.weight) return r;
+        rand -= r.weight;
+      }
+      return rewards[0];
+    }
+
+    function openCase() {
+      if (opening) return;
+      const user = AppState.getUser();
+      if (!user || !user.loggedIn) {
+        showToast('Kasa açmak için giriş yapmalısın!', true);
+        return;
+      }
+      if (user.balance < 200) {
+        showToast('Yetersiz bakiye! En az 200 R$ gerekli.', true);
+        return;
+      }
+
+      AppState.addBalance(-200, 'Limited Kasa Açılımı');
+      opening = true;
+
+      const iconEl = document.getElementById('case-box-icon');
+      const titleEl = document.getElementById('case-result-title');
+      const subEl = document.getElementById('case-result-sub');
+
+      titleEl.textContent = 'Kasa Açılıyor...';
+      subEl.textContent = 'Limited eşya belirleniyor...';
+
+      let ticks = 0;
+      const anim = setInterval(() => {
+        ticks++;
+        const temp = rewards[ticks % rewards.length];
+        iconEl.textContent = temp.icon;
+        iconEl.style.transform = ticks % 2 === 0 ? 'scale(1.15) rotate(6deg)' : 'scale(1.15) rotate(-6deg)';
+
+        if (ticks >= 14) {
+          clearInterval(anim);
+          iconEl.style.transform = 'scale(1)';
+          const won = pickReward();
+          iconEl.textContent = won.icon;
+          titleEl.textContent = won.name;
+          subEl.innerHTML = `Kasa ödülü olarak <strong style="color:var(--roblox-green);">+${won.val} R$</strong> bakiyene eklendi!`;
+          AppState.addBalance(won.val, `Kasa Ödülü: ${won.name}`);
+          showToast(`${won.name} çıktı! +${won.val} R$`);
+          opening = false;
+        }
+      }, 100);
+    }
+  </script>
+</body>
+</html>

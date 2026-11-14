@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robux Katlama Oyunları — CynoRobux</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div style="margin-bottom: 28px;">
+      <h1 style="font-size: 32px; font-weight: 800;">🎮 Robux Katlama Oyunları</h1>
+      <p style="color: var(--text-muted); margin-top: 6px;">Bakiyeni seçtiğin oyunda katla, kazandığın Robux'ları dilediğin an çek.</p>
+    </div>
+
+    <div class="games-grid" style="grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));">
+      <a href="oyun-crash.html" class="game-card">
+        <span class="game-badge">En Popüler • 100x</span>
+        <div>
+          <div class="game-icon-box">🚀</div>
+          <h3>Robux Crash</h3>
+          <p>Blox roketi yükseldikçe çarpan katlanır. Roket patlamadan önce "Bozdur" butonuna bas ve Robux'unu kap!</p>
+        </div>
+        <span class="btn btn-primary" style="width: 100%;">Crash Oyna</span>
+      </a>
+
+      <a href="oyun-mines.html" class="game-card">
+        <span class="game-badge">Strateji • 24x</span>
+        <div>
+          <div class="game-icon-box">💎</div>
+          <h3>Robux Mines (Mayınlar)</h3>
+          <p>25 kapalı blok arasında gizlenen Robux taşlarını aç. Her doğru taşta kazancın katlanır, mayına basarsan yanar.</p>
+        </div>
+        <span class="btn btn-primary" style="width: 100%;">Mines Oyna</span>
+      </a>
+
+      <a href="oyun-kasa.html" class="game-card">
+        <span class="game-badge">Roblox Limited</span>
+        <div>
+          <div class="game-icon-box">📦</div>
+          <h3>Limited Kasa Açılımı</h3>
+          <p>Roblox efsanevi eşyalarıyla dolu kasayı çevir: Korblox, Headless, Valkyrie veya Dominus çıkar!</p>
+        </div>
+        <span class="btn btn-primary" style="width: 100%;">Kasa Aç</span>
+      </a>
+
+      <a href="oyun-coinflip.html" class="game-card">
+        <span class="game-badge">%46 Şans • 1.85x</span>
+        <div>
+          <div class="game-icon-box">🪙</div>
+          <h3>Robux Yazı-Tura</h3>
+          <p>Yeşil Robux ya da Siyah Blox tarafını seç. Parayı fırlat ve saniyeler içinde yatırdığını ikiye katla.</p>
+        </div>
+        <span class="btn btn-primary" style="width: 100%;">Yazı-Tura Oyna</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>renderLayout('oyunlar');</script>
+</body>
+</html>
