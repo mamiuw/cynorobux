@@ -11,30 +11,30 @@
     <div style="max-width: 780px; margin: 0 auto;">
       <div style="margin-bottom: 24px;">
         <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">ANINDA OTOMATİK SİSTEM</span>
-        <h1 style="font-size: 30px; font-weight: 800;">➕ Gamepass ile Robux Yatır (Min 540 R$)</h1>
-        <p style="color: var::text-muted); margin-top: 6px;">Roblox hesabındaki Robux'ları CynoRobux Gamepass'leri veya esnek kaydırmalı miktar ile aktar.</p>
+        <h1 style="font-size: 30px; font-weight: 800;">➕ Gamepass ile Robux Yatır (Min 50 R$)</h1>
+        <p style="color: var(--text-muted); margin-top: 6px;">Roblox hesabındaki Robux'ları CynoRobux Gamepass'leri veya esnek kaydırmalı miktar ile aktar.</p>
       </div>
 
       <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; margin-bottom: 24px;">
         <h3 style="font-size: 16px; margin-bottom: 16px;">1. Yatırım Miktarını Seç veya Kaydır</h3>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px;">
-          <div class="stat-card" style="cursor: pointer; border-color: var(--roblox-green);" onclick="setDepositAmount(540)">
+          <div class="stat-card" style="cursor: pointer; border-color: var(--roblox-green);" onclick="setDepositAmount(50)">
             <div class="stat-label">STANDART MİN</div>
-            <div class="stat-value" style="color: var(--roblox-green);">540 R$</div>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+50 R$ Bonus</div>
+            <div class="stat-value" style="color: var(--roblox-green);">50 R$</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+5 R$ Bonus</div>
+          </div>
+
+          <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(250)">
+            <div class="stat-label">OYUNCU</div>
+            <div class="stat-value" style="color: var(--roblox-green);">250 R$</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+25 R$ Bonus</div>
           </div>
 
           <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(1000)">
-            <div class="stat-label">OYUNCU</div>
+            <div class="stat-label">PRO</div>
             <div class="stat-value" style="color: var(--roblox-green);">1,000 R$</div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+120 R$ Bonus</div>
-          </div>
-
-          <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(2500)">
-            <div class="stat-label">PRO</div>
-            <div class="stat-value" style="color: var(--roblox-green);">2,500 R$</div>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+350 R$ Bonus</div>
           </div>
 
           <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(5000)">
@@ -45,10 +45,10 @@
         </div>
 
         <div class="form-group" style="margin-bottom: 20px;">
-          <label>Esnek Kaydırma / Miktar Seçici (Min: 540 R$ - Max: 25,000 R$)</label>
+          <label>Esnek Kaydırma / Miktar Seçici (Min: 50 R$ - Max: 25,000 R$)</label>
           <div style="display: flex; gap: 14px; align-items: center; margin-top: 8px;">
-            <input type="range" id="deposit-slider" min="540" max="25000" step="50" value="540" style="flex: 1; accent-color: var(--roblox-green); cursor: pointer;" oninput="onSliderChange(this.value)">
-            <input type="number" id="deposit-input" min="540" max="25000" value="540" class="form-control" style="width: 130px; font-family: 'JetBrains Mono';" oninput="onInputChange(this.value)">
+            <input type="range" id="deposit-slider" min="50" max="25000" step="10" value="50" style="flex: 1; accent-color: var(--roblox-green); cursor: pointer;" oninput="onSliderChange(this.value)">
+            <input type="number" id="deposit-input" min="50" max="25000" value="50" class="form-control" style="width: 130px;" oninput="onInputChange(this.value)">
             <span style="font-weight: 700; color: var(--roblox-green);">R$</span>
           </div>
         </div>
@@ -57,13 +57,13 @@
         <div style="background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; margin-bottom: 18px;">
           <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">GAMEPASS LİNKİ</div>
           <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <input type="text" id="gp-link" class="form-control" value="https://www.roblox.com/game-pass/540/Cyno-Custom-Pass" readonly style="flex: 1;">
+            <input type="text" id="gp-link" class="form-control" value="https://www.roblox.com/game-pass/50/Cyno-Custom-Pass" readonly style="flex: 1;">
             <a href="https://www.roblox.com/develop" target="_blank" class="btn btn-outline">Roblox'ta Aç ↗</a>
           </div>
         </div>
 
         <button onclick="submitDepositRequest()" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15px;">
-          ✅ Gamepass Satın Aldım — <span id="selected-amt-text">540</span> R$ Talep Gönder
+          ✅ Gamepass Satın Aldım — <span id="selected-amt-text">50</span> R$ Talep Gönder
         </button>
       </div>
     </div>
@@ -72,7 +72,7 @@
   <script src="app.js"></script>
   <script>
     renderLayout('yatir');
-    let currentAmt = 540;
+    let currentAmt = 50;
 
     function setDepositAmount(amt) {
       currentAmt = amt;
@@ -92,7 +92,7 @@
 
     function onInputChange(val) {
       let num = Number(val);
-      if (num < 540) num = 540;
+      if (num < 50) num = 50;
       if (num > 25000) num = 25000;
       currentAmt = num;
       document.getElementById('deposit-slider').value = num;
@@ -109,7 +109,6 @@
       const bonus = Math.floor(currentAmt * 0.08);
       const totalAdd = currentAmt + bonus;
       
-      // Add to admin requests
       AppState.addRequest('Yatırım', `${currentAmt} R$ Gamepass Yatırım Talebi (+${bonus} Bonus)`, totalAdd);
       AppState.addBalance(totalAdd, `Gamepass Yatırımı (${currentAmt} R$)`);
       
