@@ -10,91 +10,136 @@
   <div class="container">
     <div style="max-width: 780px; margin: 0 auto;">
       <div style="margin-bottom: 24px;">
-        <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">7/24 OTOMATİK ÖDEME BOTU</span>
-        <h1 style="font-size: 30px; font-weight: 800;">💸 Kazandığın Robux'ları Çek</h1>
-        <p style="color: var(--text-muted); margin-top: 6px;">Oyunlardan katladığın Robux'ları kendi oluşturduğun Gamepass üzerinden çekim talebiyle aktar.</p>
+        <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">ANINDA TRANSFER</span>
+        <h1 style="font-size: 30px; font-weight: 800;">💸 Robux Çek (Min 50 R$)</h1>
+        <p style="color: var(--text-muted); margin-top: 6px;">Hesabındaki bakiyeyi Roblox Gamepass veya grup yoluyla cüzdanına çek.</p>
       </div>
 
       <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; margin-bottom: 24px;">
-        <form onsubmit="handleWithdraw(event)">
-          <div class="form-group">
-            <label>Çekilecek Robux Miktarı (Min: 50 R$)</label>
-            <input type="number" id="wd-amount" class="form-control" placeholder="Örn: 500" min="50" required>
+        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-dark); padding: 18px 22px; border-radius: 14px; border: 1px solid var(--border-color); margin-bottom: 24px;">
+          <div>
+            <div style="font-size: 13px; color: var(--text-muted);">Mevcut Bakiyen</div>
+            <div id="user-bakiye-text" style="font-size: 24px; font-weight: 800; color: var(--roblox-green); margin-top: 2px;">0 R$</div>
           </div>
-
-          <div class="form-group">
-            <label>Kendi Roblox Gamepass Linkin</label>
-            <input type="url" id="wd-link" class="form-control" placeholder="https://www.roblox.com/game-pass/..." required>
-            <small style="color: var(--text-muted); font-size: 12px; display: block; margin-top: 6px;">
-              Not: Roblox %30 komisyonunu CynoRobux karşılar! Gamepass fiyatını çekeceğin tutar olarak ayarla.
-            </small>
+          <div style="text-align: right;">
+            <div style="font-size: 13px; color: var(--text-muted);">Komisyon Oranı</div>
+            <div style="font-size: 15px; font-weight: 700; color: #fff;">%0 (Ücretsiz)</div>
           </div>
+        </div>
 
-          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15px; margin-top: 8px;">
-            🚀 Çekim Talebi Oluştur (Admin Onaylı)
-          </button>
-        </form>
-      </div>
+        <div class="form-group" style="margin-bottom: 18px;">
+          <label>Roblox Kullanıcı Adın *</label>
+          <input type="text" id="withdraw-username" class="form-control" placeholder="Örn: AhmetBlox_TR" required>
+        </div>
 
-      <div style="background: var::bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px;">
-        <h3 style="font-size: 16px; margin-bottom: 12px;">📜 Çekim & İşlem Geçmişin</h3>
-        <table class="feed-table">
-          <thead>
-            <tr>
-              <th>İşlem Türü</th>
-              <th>Açıklama</th>
-              <th>Miktar</th>
-              <th>Saat</th>
-            </tr>
-          </thead>
-          <tbody id="user-history-body">
-            <tr><td colspan="4" style="color: var(--text-muted);">Giriş yaptığında işlemlerin burada görünür.</td></tr>
-          </tbody>
-        </table>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label>Çekilecek Miktar (R$) *</label>
+          <input type="number" id="withdraw-amount" min="50" max="25000" value="50" class="form-control" placeholder="Min 50 R$" required>
+          <small style="color: var(--text-muted); font-size: 11px; display: block; margin-top: 6px;">Minimum çekim tutarı 50 R$'dır.</small>
+        </div>
+
+        <button onclick="submitWithdrawRequest()" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15px;">
+          🚀 Çekim Talebi Oluştur
+        </button>
       </div>
     </div>
   </div>
 
   <script src="app.js"></script>
   <script>
-    renderLayout('cek');
+    renderLayout('cikis');
 
-    function renderHistory() {
-      const user = AppState.getUser();
-      const tbody = document.getElementById('user-history-body');
-      if (!user || !user.loggedIn || !user.history) return;
-      tbody.innerHTML = user.history.map(item => `
-        <tr>
-          <td><strong>${item.type}</strong></td>
-          <td>${item.detail}</td>
-          <td style="color: ${item.amount.startsWith('+') ? 'var(--roblox-green)' : 'var(--text-main)'}; font-weight: 700;">${item.amount}</td>
-          <td style="color: var(--text-muted);">${item.date}</td>
-        </tr>
-      `).join('');
-    }
-    renderHistory();
+    // Sayfa açıldığında kullanıcının güncel bakiyesini göster
+    window.addEventListener('DOMContentLoaded', () => {
+      const currentUser = localStorage.getItem('cynoUser');
+      const currentBakiye = localStorage.getItem('cynoBakiye') || 0;
+      if (currentUser) {
+        document.getElementById('withdraw-username').value = currentUser;
+        document.getElementById('user-bakiye-text').textContent = currentBakiye + ' R$';
+      }
+    });
+  </script>
 
-    function handleWithdraw(e) {
-      e.preventDefault();
-      const user = AppState.getUser();
-      if (!user || !user.loggedIn) {
-        showToast('Çekim yapmak için giriş yapmalısın!', true);
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, get, update, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
+      authDomain: "cynorobux.firebaseapp.com",
+      databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
+      projectId: "cynorobux",
+      storageBucket: "cynorobux.firebasestorage.app",
+      messagingSenderId: "854181611047",
+      appId: "1:854181611047:web:db37f6a281bca890d67002",
+      measurementId: "G-8PQFNEH1F3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.submitWithdrawRequest = function() {
+      const currentUser = localStorage.getItem('cynoUser');
+      if (!currentUser) {
+        alert("Önce giriş yapmalısın kanka!");
+        window.location.href = "giris.html";
         return;
       }
-      const amt = Number(document.getElementById('wd-amount').value);
-      const link = document.getElementById('wd-link').value;
 
-      if (amt < 50 || amt > user.balance) {
-        showToast('Yetersiz Robux bakiyesi veya minimum tutar (50 R$) hatası!', true);
+      const robloxUser = document.getElementById('withdraw-username').value.trim();
+      const miktar = Number(document.getElementById('withdraw-amount').value);
+
+      if (!robloxUser || !miktar) {
+        alert("Lütfen tüm alanları doldur!");
         return;
       }
 
-      AppState.addBalance(-amt, `Çekim Talebi (${link})`);
-      AppState.addRequest('Çekim', `Gamepass Çekim Talebi: ${link}`, amt);
-      renderHistory();
-      showToast(`Başarılı! ${amt} R$ çekim talebiniz admin paneline iletildi.`);
-      document.getElementById('wd-amount').value = '';
-      document.getElementById('wd-link').value = '';
+      if (miktar < 50) {
+        alert("Minimum çekim tutarı 50 R$ olmalıdır!");
+        return;
+      }
+
+      const userRef = ref(db, 'users/' + currentUser);
+
+      get(userRef).then((snapshot) => {
+        if (!snapshot.exists()) {
+          alert("Kullanıcı veritabanında bulunamadı!");
+          return;
+        }
+
+        const userData = snapshot.val();
+        const mevcutBakiye = Number(userData.bakiye) || 0;
+
+        if (mevcutBakiye < miktar) {
+          alert(`Yetersiz bakiye! Mevcut bakiyen: ${mevcutBakiye} R$`);
+          return;
+        }
+
+        const yeniBakiye = mevcutBakiye - miktar;
+
+        // Kullanıcının bakiyesini düşür ve güncelle
+        update(userRef, { bakiye: yeniBakiye }).then(() => {
+          // LocalStorage güncelle
+          localStorage.setItem('cynoBakiye', yeniBakiye);
+
+          // Çekim talebini Firebase'e log olarak kaydet (Admin paneli görsün)
+          const requestsRef = ref(db, 'requests');
+          const yeniTalepRef = push(requestsRef);
+          set(yeniTalepRef, {
+            username: currentUser,
+            tur: 'Çekim',
+            detay: `${robloxUser} hesabına ${miktar} R$ Çekim Talebi`,
+            tutar: miktar,
+            tarih: new Date().toISOString()
+          });
+
+          alert(`Çekim talebin başarıyla alındı! ${miktar} R$ bakiyeden düşüldü 🎉`);
+          window.location.reload();
+        });
+      }).catch((error) => {
+        console.error("Çekim hatası:", error);
+        alert("İşlem sırasında bir hata oluştu.");
+      });
     }
   </script>
 </body>
