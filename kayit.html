@@ -41,13 +41,69 @@
   <script src="app.js"></script>
   <script>
     renderLayout('kayit');
+    
+    // Form gönderildiğinde Firebase kayıt fonksiyonunu tetikle
     function submitRegister(e) {
       e.preventDefault();
       const u = document.getElementById('reg-username').value;
       const p = document.getElementById('reg-password').value;
-      if (AppState.register(u, '', p)) {
-        setTimeout(() => { window.location.href = 'index.html'; }, 800);
+      
+      if (window.cynoKayitOl) {
+        window.cynoKayitOl(u, p);
+      } else {
+        alert("Firebase henüz yüklenmedi kanka, 1 saniye bekleyip tekrar dene!");
       }
+    }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // Firebase Bağlantısı
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
+      authDomain: "cynorobux.firebaseapp.com",
+      databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
+      projectId: "cynorobux",
+      storageBucket: "cynorobux.firebasestorage.app",
+      messagingSenderId: "854181611047",
+      appId: "1:854181611047:web:db37f6a281bca890d67002",
+      measurementId: "G-8PQFNEH1F3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Kayıt olma fonksiyonu
+    window.cynoKayitOl = function(username, password) {
+      if (!username || !password) {
+        alert("Lütfen tüm alanları doldur!");
+        return;
+      }
+
+      const userRef = ref(db, 'users/' + username);
+
+      // Önce bu kullanıcı adı var mı diye kontrol et
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          alert("Bu kullanıcı adı zaten alınmış kanka!");
+        } else {
+          // Kullanıcıyı kaydet ve 5 Robux bonus ver
+          set(userRef, {
+            username: username,
+            password: password,
+            bakiye: 5, // 5 Robux kayıt bonusu
+            banned: false,
+            kayitTarihi: new Date().toISOString()
+          }).then(() => {
+            alert("Kayıt başarılı! 5 Robux bonus hesabına eklendi 🎉");
+            window.location.href = "giris.html"; // Giriş sayfasına yönlendir
+          });
+        }
+      }).catch((error) => {
+        console.error("Kayıt hatası:", error);
+      });
     }
   </script>
 </body>
