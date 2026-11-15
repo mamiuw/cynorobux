@@ -6,12 +6,10 @@
   <title>CynoRobux — Güvenli Robux Yatırım, Çekim ve Oyun Platformu</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .hero-grid { display: grid; grid-template-columns: 1fr 400px; gap: 24px; align-items: start; margin-bottom: 40px; }
-    @media (max-width: 992px) { .hero-grid { grid-template-columns: 1fr; } }
-    .game-box { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; position: relative; }
+    .hero-grid { display: grid; grid-template-columns: 1fr; text-align: center; max-width: 800px; margin: 0 auto 40px auto; }
     .ticker-bar { background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 18px; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
     .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
-    .game-card-item { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 18px; padding: 22px; transition: 0.2s; }
+    .game-card-item { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 18px; padding: 22px; transition: 0.2s; text-align: left; }
     .game-card-item:hover { border-color: var(--roblox-green); transform: translateY(-3px); }
   </style>
 </head>
@@ -24,6 +22,7 @@
         <h2 style="font-size: 24px; font-weight: 800; color: #fff; margin: 0;">Cyno<span style="color: var(--roblox-green);">Robux</span></h2>
         <div style="display: flex; gap: 18px; align-items: center;">
           <a href="index.html" style="color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;">Ana Sayfa</a>
+          <a href="oyunlar.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Oyunlar</a>
           <a href="yatir.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Yatır</a>
           <a href="cek.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Çek</a>
         </div>
@@ -48,16 +47,16 @@
       </div>
     </div>
 
-    <!-- ANA HERO VE HIZLI KATLAMA WIDGET -->
+    <!-- ANA HERO ALANI -->
     <div class="hero-grid">
       <div>
         <span class="official-badge" style="margin-bottom: 12px; display: inline-block;">TÜRKİYE'NİN EN HIZLI PLATFORMU</span>
         <h1 style="font-size: 40px; font-weight: 800; margin-bottom: 15px; color: #fff; line-height: 1.2;">Roblox Bakiyeni Katla, Saniyeler İçinde Çek!</h1>
         <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 25px;">
-          CynoRobux; Gamepass yatırımları, anında çekimler ve şans oyunlarıyla kesintisiz eğlence sunar. Kayıt olan herkese <span style="color: var(--roblox-green); font-weight: 700;">+5 R$ Bonus</span> hediye!
+          CynoRobux; Gamepass yatırımları, anında çekimler ve heyecan dolu platform oyunlarıyla kesintisiz eğlence sunar. Kayıt olan herkese <span style="color: var(--roblox-green); font-weight: 700;">+5 R$ Bonus</span> hediye!
         </p>
 
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 30px;">
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 30px;">
           <a href="yatir.html" class="btn btn-primary" style="padding: 14px 26px; font-size: 15px; text-decoration: none;">➕ Gamepass ile Yatır</a>
           <a href="cek.html" class="btn btn-outline" style="padding: 14px 26px; font-size: 15px; text-decoration: none;">💸 Bakiye Çek</a>
         </div>
@@ -78,52 +77,30 @@
           </div>
         </div>
       </div>
-
-      <!-- HIZLI KATLAMA OYUNU WIDGET -->
-      <div class="game-box">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <h3 style="font-size: 18px; font-weight: 700; color: #fff; margin: 0;">🎲 Hızlı Katla (X2)</h3>
-          <span style="padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; background: rgba(0,255,136,0.15); color: var(--roblox-green);">AKTİF OYUN</span>
-        </div>
-        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">Bakiyeni seç, şansını dene ve paranı anında ikiye katla!</p>
-
-        <div class="form-group" style="margin-bottom: 12px;">
-          <label style="font-size: 11px; color: var(--text-muted);">Bahis Miktarı (R$)</label>
-          <input type="number" id="game-bet-amount" class="form-control" value="10" min="5" style="margin-top: 4px;">
-        </div>
-
-        <div id="game-result-box" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 14px; font-weight: 700; font-size: 14px; color: #fff;">
-          Sonuç Bekleniyor...
-        </div>
-
-        <button onclick="playMultiplierGame()" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px;">
-          🚀 Çarkı Çevir & Katla (X2)
-        </button>
-      </div>
     </div>
 
-    <!-- OYUNLAR & ÖZELLİKLER LOBİSİ -->
+    <!-- OYUNLAR & MODLAR LOBİSİ (Doğrudan Senin Dosyalarına Bağlı) -->
     <h3 style="font-size: 20px; font-weight: 800; color: #fff; margin-top: 40px; margin-bottom: 15px;">🎮 Platform Oyunları ve Modlar</h3>
     <div class="games-grid">
       <div class="game-card-item">
         <div style="font-size: 28px; margin-bottom: 10px;">🎯</div>
         <h4 style="font-size: 16px; color: #fff; margin-bottom: 6px;">Crash (Çarpan) Oyunu</h4>
         <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Çarpan yükselirken doğru zamanda bozdur, büyük ödülü kap!</p>
-        <button onclick="alert('Crash modu yakında aktifleşecek kanka!')" class="btn btn-outline" style="width: 100%; font-size: 12px; padding: 8px;">Yakında 🚀</button>
+        <a href="oyun-crash.html" class="btn btn-primary" style="display: block; text-align: center; text-decoration: none; font-size: 13px; padding: 10px;">Oyuna Git 🚀</a>
       </div>
 
       <div class="game-card-item">
         <div style="font-size: 28px; margin-bottom: 10px;">📦</div>
         <h4 style="font-size: 16px; color: #fff; margin-bottom: 6px;">Robux Kasa Açılımı</h4>
         <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Özel kasaları aç, yatırdığından kat kat fazlasını kazanma şansı yakala.</p>
-        <button onclick="alert('Kasa açılımı yakında aktifleşecek kanka!')" class="btn btn-outline" style="width: 100%; font-size: 12px; padding: 8px;">Yakında 🚀</button>
+        <a href="oyun-kasa.html" class="btn btn-primary" style="display: block; text-align: center; text-decoration: none; font-size: 13px; padding: 10px;">Oyuna Git 🚀</a>
       </div>
 
       <div class="game-card-item">
         <div style="font-size: 28px; margin-bottom: 10px;">🪙</div>
         <h4 style="font-size: 16px; color: #fff; margin-bottom: 6px;">Coinflip (Yazı-Tura)</h4>
         <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Rakibini seç veya kendi odanı kur, şansını bire bir kapışmada dene.</p>
-        <button onclick="alert('Coinflip modu yakında aktifleşecek kanka!')" class="btn btn-outline" style="width: 100%; font-size: 12px; padding: 8px;">Yakında 🚀</button>
+        <a href="oyun-coinflip.html" class="btn btn-primary" style="display: block; text-align: center; text-decoration: none; font-size: 13px; padding: 10px;">Oyuna Git 🚀</a>
       </div>
     </div>
 
@@ -132,7 +109,7 @@
   <script src="app.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
@@ -189,64 +166,12 @@
       window.location.reload();
     };
 
-    // X2 Katlama Oyunu (Firebase Bakiye Düşme/Artma Entegrasyonlu)
-    window.playMultiplierGame = function() {
-      const currentUser = localStorage.getItem('cynoUser');
-      if (!currentUser) {
-        alert("Oynamak için önce giriş yapmalısın kanka!");
-        window.location.href = 'giris.html';
-        return;
-      }
-
-      const betInput = Number(document.getElementById('game-bet-amount').value);
-      if (isNaN(betInput) || betInput < 5) {
-        alert("Minimum bahis tutarı 5 R$ olmalıdır!");
-        return;
-      }
-
-      const userRef = ref(db, 'users/' + currentUser);
-      get(userRef).then((snapshot) => {
-        if (!snapshot.exists()) return;
-        const userData = snapshot.val();
-        const mevcutBakiye = Number(userData.bakiye) || 0;
-
-        if (mevcutBakiye < betInput) {
-          alert(`Yetersiz bakiye! Mevcut bakiyen: ${mevcutBakiye} R$`);
-          return;
-        }
-
-        const resultBox = document.getElementById('game-result-box');
-        resultBox.textContent = "🎲 Çark dönüyor...";
-        resultBox.style.color = "#ffcc00";
-
-        setTimeout(() => {
-          const kazandi = Math.random() < 0.5;
-          let yeniBakiye = mevcutBakiye;
-
-          if (kazandi) {
-            yeniBakiye += betInput;
-            resultBox.textContent = `🎉 TEBRİKLER! ${betInput} R$ Kazandın! (+${betInput} R$)`;
-            resultBox.style.color = "var(--roblox-green)";
-          } else {
-            yeniBakiye -= betInput;
-            resultBox.textContent = `😢 KAPTIRDIN! ${betInput} R$ Kaybettin.`;
-            resultBox.style.color = "#ff4b4b";
-          }
-
-          update(userRef, { bakiye: yeniBakiye }).then(() => {
-            localStorage.setItem('cynoBakiye', yeniBakiye);
-            document.getElementById('live-bakiye').textContent = yeniBakiye + ' R$';
-          });
-        }, 1200);
-      });
-    };
-
     function loadLiveTicker() {
       const ticker = document.getElementById('live-ticker-text');
       const messages = [
         "🔥 Son İşlem: Bir oyuncu Gamepass ile 500 R$ yatırım yaptı!",
         "⚡ Son İşlem: 1,000 R$ tutarında çekim talebi başarıyla onaylandı.",
-        "🎉 Son İşlem: Bir kullanıcı Hızlı Katla oyununda bakiyesini 2'ye katladı!",
+        "🎉 Son İşlem: Crash oyununda yüksek çarpan yakalandı!",
         "💎 CynoRobux güvenli altyapısıyla 7/24 kesintisiz hizmet veriyor."
       ];
       let i = 0;
