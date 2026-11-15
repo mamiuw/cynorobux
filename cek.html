@@ -34,9 +34,9 @@
 
     <div style="max-width: 780px; margin: 0 auto;">
       <div style="margin-bottom: 24px;">
-        <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">ANINDA TRANSFER</span>
+        <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">GÜVENLİ ÇEKİM SİSTEMİ</span>
         <h1 style="font-size: 30px; font-weight: 800; color: #fff;">💸 Robux Çek (Min 50 R$)</h1>
-        <p style="color: var(--text-muted); margin-top: 6px; font-size: 14px;">Hesabındaki bakiyeyi Roblox Gamepass veya grup yoluyla cüzdanına çek.</p>
+        <p style="color: var(--text-muted); margin-top: 6px; font-size: 14px;">Bakiyeni Gamepass veya grup yoluyla çekmek için talep oluştur. Admin onayından sonra hesabına aktarılacaktır.</p>
       </div>
 
       <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; margin-bottom: 24px;">
@@ -69,10 +69,20 @@
     </div>
   </div>
 
+  <!-- ÖZEL BİLDİRİM MODALI -->
+  <div id="custom-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 30px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      <div id="modal-icon" style="font-size: 48px; margin-bottom: 15px;">🎉</div>
+      <h3 id="modal-title" style="font-size: 20px; color: #fff; margin-bottom: 10px;">Talep Alındı!</h3>
+      <p id="modal-desc" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;"></p>
+      <button onclick="closeModal()" class="btn btn-primary" style="width: 100%; padding: 12px; cursor: pointer;">Tamam</button>
+    </div>
+  </div>
+
   <!-- FIREBASE VE ÇEKİM MANTIĞI -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, get, update, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, get, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
@@ -130,8 +140,8 @@
 
     window.submitWithdrawRequest = function() {
       if (!currentUser) {
-        alert("Önce giriş yapmalısın kanka!");
-        window.location.href = "giris.html";
+        showModal("Giriş Gerekli", "Çekim talebi oluşturmak için önce giriş yapmalısın kanka!", "⚠️");
+        setTimeout(() => { window.location.href = "giris.html"; }, 2000);
         return;
       }
 
@@ -139,45 +149,50 @@
       const miktar = Number(document.getElementById('withdraw-amount').value);
 
       if (!robloxUser || !miktar) {
-        alert("Lütfen tüm alanları doldur!");
+        showModal("Eksik Bilgi", "Lütfen tüm alanları eksiksiz doldur kanka!", "⚠️");
         return;
       }
 
       if (miktar < 50) {
-        alert("Minimum çekim tutarı 50 R$ olmalıdır!");
+        showModal("Geçersiz Tutar", "Minimum çekim tutarı 50 R$ olmalıdır!", "⚠️");
         return;
       }
 
       if (currentBalance < miktar) {
-        alert(`Yetersiz bakiye! Mevcut bakiyen: ${currentBalance} R$`);
+        showModal("Yetersiz Bakiye", `Bakiyen bu çekim için yetersiz! Mevcut bakiyen: ${currentBalance} R$`, "❌");
         return;
       }
 
-      const yeniBakiye = currentBalance - miktar;
-      const userRef = ref(db, 'users/' + currentUser);
+      // Çekim talebini Firebase'e Bekliyor statüsüyle kaydet (Bakiyeden hemen düşmez, admin onaylayınca düşer)
+      const requestsRef = ref(db, 'requests');
+      const yeniTalepRef = push(requestsRef);
 
-      // Kullanıcının bakiyesini düşür ve güncelle
-      update(userRef, { bakiye: yeniBakiye }).then(() => {
-        localStorage.setItem('cynoBakiye', yeniBakiye);
-
-        // Çekim talebini Firebase'e log olarak kaydet (Admin paneli görsün)
-        const requestsRef = ref(db, 'requests');
-        const yeniTalepRef = push(requestsRef);
-        set(yeniTalepRef, {
-          username: currentUser,
-          tur: 'Çekim',
-          detay: `${robloxUser} hesabına ${miktar} R$ Çekim Talebi`,
-          tutar: miktar,
-          tarih: new Date().toISOString()
-        });
-
-        alert(`Çekim talebin başarıyla alındı! ${miktar} R$ bakiyeden düşüldü 🎉`);
-        window.location.reload();
+      set(yeniTalepRef, {
+        username: currentUser,
+        tur: 'Çekim',
+        detay: `${robloxUser} hesabına ${miktar} R$ Çekim Talebi`,
+        tutar: miktar,
+        durum: 'Bekliure' / 'Bekliyor', // Bekliyor
+        tarih: new Date().toISOString()
+      }).then(() => {
+        showModal("Çekim Talebi Alındı!", `${miktar} R$ tutarındaki çekim talebin admin paneline iletildi. Kontrol edildikten sonra gönderilecektir!`, "💸");
       }).catch((error) => {
         console.error("Çekim hatası:", error);
-        alert("İşlem sırasında bir hata oluştu.");
+        showModal("Hata", "Talep oluşturulurken bir hata oluştu.", "❌");
       });
-    }
+    };
+
+    window.showModal = function(title, desc, icon) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-desc').textContent = desc;
+      document.getElementById('modal-icon').textContent = icon;
+      document.getElementById('custom-modal').style.display = 'flex';
+    };
+
+    window.closeModal = function() {
+      document.getElementById('custom-modal').style.display = 'none';
+      window.location.reload();
+    };
   </script>
 </body>
 </html>
