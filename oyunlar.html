@@ -7,103 +7,131 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div style="margin-bottom: 28px;">
-      <h1 style="font-size: 32px; font-weight: 800;">🎮 Robux Katlama Oyunları</h1>
-      <p style="color: var(--text-muted); margin-top: 6px;">Bakiyeni seçtiğin oyunda katla, kazandığın Robux'ları dilediğin an çek.</p>
+  <div class="container" style="max-width: 1200px; padding: 20px 15px;">
+    
+    <!-- ÜST MENÜ / NAVBAR -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 30px;">
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <h2 style="font-size: 24px; font-weight: 800; color: #fff; margin: 0;">Cyno<span style="color: var(--roblox-green);">Robux</span></h2>
+        <div style="display: flex; gap: 15px;">
+          <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Ana Sayfa</a>
+          <a href="oyunlar.html" style="color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;">Oyunlar</a>
+          <a href="yatir.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Yatır</a>
+          <a href="cek.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Çek</a>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 12px; color: var(--text-muted);">Bakiye:</span>
+          <span id="live-bakiye" style="font-weight: 800; color: var(--roblox-green); font-size: 16px;">0 R$</span>
+        </div>
+        <div id="auth-buttons">
+          <!-- Oturum durumuna göre dinamik dolacak -->
+        </div>
+      </div>
     </div>
 
-    <div class="games-grid" style="grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));">
-      <a href="oyun-crash.html" class="game-card">
-        <span class="game-badge">En Popüler • 100x</span>
+    <div style="margin-bottom: 28px;">
+      <h1 style="font-size: 32px; font-weight: 800; color: #fff;">🎮 Robux Katlama Oyunları</h1>
+      <p style="color: var(--text-muted); margin-top: 6px; font-size: 14px;">Bakiyeni seçtiğin oyunda katla, kazandığın Robux'ları dilediğin an çek.</p>
+    </div>
+
+    <div class="games-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+      
+      <a href="oyun-crash.html" class="game-card" style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;">
         <div>
-          <div class="game-icon-box">🚀</div>
-          <h3>Robux Crash</h3>
-          <p>Blox roketi yükseldikçe çarpan katlanır. Roket patlamadan önce "Bozdur" butonuna bas ve Robux'unu kap!</p>
+          <span class="official-badge" style="font-size: 10px; margin-bottom: 10px; display: inline-block;">En Popüler • 100x</span>
+          <div style="font-size: 32px; margin-bottom: 10px;">🚀</div>
+          <h3 style="font-size: 18px; color: #fff; margin-bottom: 8px;">Robux Crash</h3>
+          <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Blox roketi yükseldikçe çarpan katlanır. Roket patlamadan önce bozdur ve Robux'unu kap!</p>
         </div>
-        <span class="btn btn-primary" style="width: 100%;">Crash Oyna</span>
+        <span class="btn btn-primary" style="width: 100%; text-align: center; padding: 10px; font-size: 13px;">Crash Oyna</span>
       </a>
 
-      <a href="oyun-mines.html" class="game-card">
-        <span class="game-badge">Strateji • 24x</span>
+      <a href="oyun-mines.html" class="game-card" style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;">
         <div>
-          <div class="game-icon-box">💎</div>
-          <h3>Robux Mines (Mayınlar)</h3>
-          <p>25 kapalı blok arasında gizlenen Robux taşlarını aç. Her doğru taşta kazancın katlanır, mayına basarsan yanar.</p>
+          <span class="official-badge" style="font-size: 10px; margin-bottom: 10px; display: inline-block;">Strateji • 24x</span>
+          <div style="font-size: 32px; margin-bottom: 10px;">💎</div>
+          <h3 style="font-size: 18px; color: #fff; margin-bottom: 8px;">Robux Mines (Mayınlar)</h3>
+          <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 20px;">25 blok arasında gizlenen elmasları aç. Her doğru taşta kazancın katlanır, mayına basarsan yanarsın.</p>
         </div>
-        <span class="btn btn-primary" style="width: 100%;">Mines Oyna</span>
+        <span class="btn btn-primary" style="width: 100%; text-align: center; padding: 10px; font-size: 13px;">Mines Oyna</span>
       </a>
 
-      <a href="oyun-kasa.html" class="game-card">
-        <span class="game-badge">Roblox Limited</span>
+      <a href="oyun-kasa.html" class="game-card" style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;">
         <div>
-          <div class="game-icon-box">📦</div>
-          <h3>Limited Kasa Açılımı</h3>
-          <p>Roblox efsanevi eşyalarıyla dolu kasayı çevir: Korblox, Headless, Valkyrie veya Dominus çıkar!</p>
+          <span class="official-badge" style="font-size: 10px; margin-bottom: 10px; display: inline-block;">Roblox Limited</span>
+          <div style="font-size: 32px; margin-bottom: 10px;">📦</div>
+          <h3 style="font-size: 18px; color: #fff; margin-bottom: 8px;">Limited Kasa Açılımı</h3>
+          <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Roblox eşyalarıyla dolu kasayı aç: Korblox, Kulaklık veya Dominus efsanevi ödülleri yakala!</p>
         </div>
-        <span class="btn btn-primary" style="width: 100%;">Kasa Aç</span>
+        <span class="btn btn-primary" style="width: 100%; text-align: center; padding: 10px; font-size: 13px;">Kasa Aç</span>
       </a>
 
-      <a href="oyun-coinflip.html" class="game-card">
-        <span class="game-badge">%46 Şans • 1.85x</span>
+      <a href="oyun-coinflip.html" class="game-card" style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;">
         <div>
-          <div class="game-icon-box">🪙</div>
-          <h3>Robux Yazı-Tura</h3>
-          <p>Yeşil Robux ya da Siyah Blox tarafını seç. Parayı fırlat ve saniyeler içinde yatırdığını ikiye katla.</p>
+          <span class="official-badge" style="font-size: 10px; margin-bottom: 10px; display: inline-block;">%46 Şans • 1.85x</span>
+          <div style="font-size: 32px; margin-bottom: 10px;">🪙</div>
+          <h3 style="font-size: 18px; color: #fff; margin-bottom: 8px;">Robux Yazı-Tura</h3>
+          <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Yeşil Robux ya da Siyah Blox tarafını seç. Parayı fırlat ve saniyeler içinde yatırdığını ikiye katla.</p>
         </div>
-        <span class="btn btn-primary" style="width: 100%;">Yazı-Tura Oyna</span>
+        <span class="btn btn-primary" style="width: 100%; text-align: center; padding: 10px; font-size: 13px;">Yazı-Tura Oyna</span>
       </a>
+
     </div>
   </div>
 
-  <script src="app.js"></script>
-  <script>renderLayout('oyunlar');</script>
-<!-- Oyunun kendi kodları burada biter -->
-    
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  <!-- FIREBASE VE OTURUM KONTROLÜ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
-        authDomain: "cynorobux.firebaseapp.com",
-        databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
-        projectId: "cynorobux",
-        storageBucket: "cynorobux.firebasestorage.app",
-        messagingSenderId: "854181611047",
-        appId: "1:854181611047:web:db37f6a281bca890d67002",
-        measurementId: "G-8PQFNEH1F3"
-      };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
+      authDomain: "cynorobux.firebaseapp.com",
+      databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
+      projectId: "cynorobux",
+      storageBucket: "cynorobux.firebasestorage.app",
+      messagingSenderId: "854181611047",
+      appId: "1:854181611047:web:db37f6a281bca890d67002",
+      measurementId: "G-8PQFNEH1F3"
+    };
 
-      const app = initializeApp(firebaseConfig);
-      const db = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-      window.addEventListener('DOMContentLoaded', () => {
-        const currentUser = localStorage.getItem('cynoUser');
-        const authContainer = document.getElementById('auth-buttons') || document.querySelector('.nav-auth') || document.getElementById('user-info-area');
-        const bakiyeText = document.getElementById('live-bakiye') || document.getElementById('user-bakiye');
+    window.addEventListener('DOMContentLoaded', () => {
+      const currentUser = localStorage.getItem('cynoUser');
+      const authContainer = document.getElementById('auth-buttons');
+      const bakiyeText = document.getElementById('live-bakiye');
 
-        if (!currentUser) {
-          if (bakiyeText) bakiyeText.textContent = '0 R$';
-          return;
+      if (!currentUser) {
+        bakiyeText.textContent = '0 R$';
+        authContainer.innerHTML = `
+          <a href="giris.html" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; text-decoration: none; margin-right: 8px;">Giriş Yap</a>
+          <a href="kayit.html" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; text-decoration: none;">Kayıt Ol</a>
+        `;
+        return;
+      }
+
+      // Firebase'den anlık bakiye çek
+      const userRef = ref(db, 'users/' + currentUser);
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          const guncelBakiye = userData.bakiye || 0;
+          
+          bakiyeText.textContent = guncelBakiye + ' R$';
+          localStorage.setItem('cynoBakiye', guncelBakiye);
+
+          authContainer.innerHTML = `
+            <span style="color: #fff; font-weight: 700; font-size: 13px; margin-right: 10px;">👤 ${currentUser}</span>
+            <button onclick="localStorage.removeItem('cynoUser'); window.location.reload();" class="btn btn-outline" style="padding: 5px 10px; font-size: 11px; border-color: #ff4b4b; color: #ff4b4b; cursor:pointer;">Çıkış</button>
+          `;
         }
-
-        const userRef = ref(db, 'users/' + currentUser);
-        get(userRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            const userData = snapshot.val();
-            const guncelBakiye = userData.bakiye || 0;
-            
-            if (bakiyeText) bakiyeText.textContent = guncelBakiye + ' R$';
-            localStorage.setItem('cynoBakiye', guncelBakiye);
-
-            const userAdText = document.getElementById('username-display');
-            if (userAdText) userAdText.textContent = currentUser;
-          }
-        });
       });
-    </script>
-  </body>
-</html>
+    });
+  </script>
 </body>
 </html>
