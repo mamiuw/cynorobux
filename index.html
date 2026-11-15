@@ -3,215 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CynoRobux — Roblox Gamepass & Robux Katlama Platformu</title>
+  <title>CynoRobux — Güvenli Robux Yatırım, Çekim ve Oyun Platformu</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .hero-grid { display: grid; grid-template-columns: 1fr 400px; gap: 24px; align-items: start; margin-bottom: 40px; }
+    @media (max-width: 992px) { .hero-grid { grid-template-columns: 1fr; } }
+    .game-box { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; position: relative; }
+    .ticker-bar { background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 18px; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+    .game-card-item { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 18px; padding: 22px; transition: 0.2s; }
+    .game-card-item:hover { border-color: var(--roblox-green); transform: translateY(-3px); }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <div class="hero-grid">
-      <div>
-        <div class="hero-banner">
-          <div class="hero-tag">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L20.66 7V17L12 22L3.34 17V7L12 2Z" stroke="#00e676" stroke-width="2.5"/></svg>
-            ROBLOX GAMEPASS ENTEGRASYONLU PLATFORM
-          </div>
-          <h1>Robux'unu Gamepass ile Yükle, <span>Oyunlarla Katla!</span></h1>
-          <p>
-            CynoRobux ile Roblox hesabındaki Robux'ları saniyeler içinde Gamepass üzerinden siteye aktar. 
-            Crash, Mayın Tarlası, Kasa Açılımı ve Yazı-Tura oyunlarında bakiyeni katla ve anında çek!
-          </p>
-          <div class="hero-actions">
-            <a href="oyunlar.html" class="btn btn-primary">🎮 Hemen Oynamaya Başla</a>
-            <a href="yatir.html" class="btn btn-outline">➕ Robux Yükle (Min 50 R$)</a>
-            <a id="hero-discord-btn" href="https://discord.gg/cynorobux" target="_blank" class="btn btn-discord">💬 Discord Sunucumuz</a>
-          </div>
-        </div>
-
-        <div class="stats-strip">
-          <div class="stat-card">
-            <div class="stat-label">TOPLAM DAĞITILAN ROBUX</div>
-            <div class="stat-value">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L20.66 7V17L12 22L3.34 17V7L12 2Z" stroke="#00e676" stroke-width="2.2" fill="rgba(0,230,118,0.15)"/><rect x="9.2" y="9.2" width="5.6" height="5.6" rx="1" fill="#00e676"/></svg>
-              5,240,100 R$
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">AKTİF ROBLOX OYUNCUSU</div>
-            <div class="stat-value" style="color: var(--roblox-green);">1,492 Çevrimiçi</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">ORTALAMA ÇEKİM SÜRESİ</div>
-            <div class="stat-value">~30 Saniye</div>
-          </div>
-        </div>
-
-        <div class="section-header">
-          <h2 class="section-title">🔥 Popüler Robux Katlama Oyunları</h2>
-          <a href="oyunlar.html" style="color: var(--roblox-green); text-decoration: none; font-size: 14px; font-weight: 700;">Tüm Oyunları Gör →</a>
-        </div>
-
-        <div class="games-grid">
-          <a href="oyun-crash.html" class="game-card">
-            <span class="game-badge">100x'e Kadar</span>
-            <div>
-              <div class="game-icon-box">🚀</div>
-              <h3>Robux Crash</h3>
-              <p>Roket yükselirken çarpan artar! Patlamadan önce bozdur, Robux'unu anında katla.</p>
-            </div>
-            <span class="btn btn-primary" style="width: 100%;">Oyna</span>
-          </a>
-          <a href="oyun-mines.html" class="game-card">
-            <span class="game-badge">Yüksek Kazanç</span>
-            <div>
-              <div class="game-icon-box">💎</div>
-              <h3>Robux Mines</h3>
-              <p>25 kutu içindeki yeşil Robux kristallerini bul, mayınlara basmadan ödülünü topla.</p>
-            </div>
-            <span class="btn btn-primary" style="width: 100%;">Oyna</span>
-          </a>
-          <a href="oyun-kasa.html" class="game-card">
-            <span class="game-badge">Dominus & Valkyrie</span>
-            <div>
-              <div class="game-icon-box">📦</div>
-              <h3>Limited Kasa Aç</h3>
-              <p>Roblox Limited eşya kasalarını aç! Dominus, Valkyrie veya Korblox çıkarsa katla.</p>
-            </div>
-            <span class="btn btn-primary" style="width: 100%;">Oyna</span>
-          </a>
-          <a href="oyun-coinflip.html" class="game-card">
-            <span class="game-badge">%46 Şans • 1.85x</span>
-            <div>
-              <div class="game-icon-box">🪙</div>
-              <h3>Robux Yazı-Tura</h3>
-              <p>Yeşil Robux mu yoksa Siyah Blox mu? Tarafını seç, tek atışta bakiyeni katla.</p>
-            </div>
-            <span class="btn btn-primary" style="width: 100%;">Oyna</span>
-          </a>
-        </div>
-
-        <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 18px; padding: 22px; margin-top: 28px;">
-          <h3 style="font-size: 16px; margin-bottom: 10px;">⚡ Canlı Robux Kazanç Akışı</h3>
-          <table class="feed-table">
-            <thead>
-              <tr>
-                <th>Roblox Oyuncusu</th>
-                <th>Oyun</th>
-                <th>Yatırılan</th>
-                <th>Çarpan</th>
-                <th>Kazanç</th>
-              </tr>
-            </thead>
-            <tbody id="live-feed-body">
-              <tr>
-                <td><strong>Marlon_Fan</strong></td>
-                <td>🚀 Robux Crash</td>
-                <td>540 R$</td>
-                <td style="color: var(--roblox-green); font-weight: 700;">4.20x</td>
-                <td style="color: var(--roblox-green); font-weight: 800;">+2,268 R$</td>
-              </tr>
-              <tr>
-                <td><strong>EfeRobux_TR</strong></td>
-                <td>🪙 Yazı-Tura</td>
-                <td>1,000 R$</td>
-                <td style="color: var(--roblox-green); font-weight: 700;">1.85x</td>
-                <td style="color: var(--roblox-green); font-weight: 800;">+1,850 R$</td>
-              </tr>
-            </tbody>
-          </table>
+  <div class="container" style="max-width: 1200px; padding: 20px 15px;">
+    
+    <!-- ÜST MENÜ / NAVBAR -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+      <div style="display: flex; align-items: center; gap: 25px;">
+        <h2 style="font-size: 24px; font-weight: 800; color: #fff; margin: 0;">Cyno<span style="color: var(--roblox-green);">Robux</span></h2>
+        <div style="display: flex; gap: 18px; align-items: center;">
+          <a href="index.html" style="color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;">Ana Sayfa</a>
+          <a href="yatir.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Yatır</a>
+          <a href="cek.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Çek</a>
         </div>
       </div>
 
-      <!-- SAĞ TARAF: GİRİŞ / KAYIT VEYA PROFİL PANELİ -->
-      <aside class="auth-sidebar">
-        <!-- Giriş Yapılmamışsa Gözükecek Formlar -->
-        <div id="sidebar-auth-forms">
-          <div class="auth-tabs">
-            <button class="auth-tab-btn active" id="tab-login" onclick="switchAuthTab('login')">Giriş Yap</button>
-            <button class="auth-tab-btn" id="tab-register" onclick="switchAuthTab('register')">Kayıt Ol</button>
-          </div>
-          <form id="quick-login-form" onsubmit="handleQuickLogin(event)">
-            <div class="form-group">
-              <label>Roblox Kullanıcı Adı</label>
-              <input type="text" id="ql-user" class="form-control" placeholder="Örn: BuilderMan_TR" required>
-            </div>
-            <div class="form-group">
-              <label>CynoRobux Şifresi</label>
-              <input type="password" id="ql-pass" class="form-control" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px;">Hemen Giriş Yap</button>
-            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 14px;">
-              Ayrı tam ekran giriş için <a href="giris.html" style="color: var(--roblox-green);">Giriş Sayfasına</a> git.
-            </p>
-          </form>
-
-          <form id="quick-register-form" style="display: none;" onsubmit="handleQuickRegister(event)">
-            <div class="form-group">
-              <label>Roblox Kullanıcı Adı</label>
-              <input type="text" id="qr-user" class="form-control" placeholder="Roblox Nickname" required>
-            </div>
-            <div class="form-group">
-              <label>Hesap Şifresi *</label>
-              <input type="password" id="qr-pass" class="form-control" placeholder="En az 4 karakter" required>
-              <small style="color: var(--danger); font-size: 11px; display: block; margin-top: 4px;">⚠️ (Roblox hesap şifrenizi girmeyiniz)</small>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px;">Kayıt Ol (+5 R$ Bonus)</button>
-            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 14px;">
-              Detaylı kayıt ekranı için <a href="kayit.html" style="color: var(--roblox-green);">Kayıt Sayfasına</a> git.
-            </p>
-          </form>
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 12px; color: var(--text-muted);">Bakiye:</span>
+          <span id="live-bakiye" style="font-weight: 800; color: var(--roblox-green); font-size: 16px;">0 R$</span>
         </div>
-
-        <!-- Giriş Yapıldığında Otomatik Açılacak Canlı Profil Paneli -->
-        <div id="sidebar-user-profile" class="profile-widget" style="display: none;">
-          <div class="avatar-circle">🟩</div>
-          <h3 id="side-username" style="font-size: 20px; margin-bottom: 4px;">Oyuncu</h3>
-          <p id="side-userid" style="font-size: 12px; color: var(--text-muted); margin-bottom: 18px;">CynoRobux Üyesi</p>
-          <div style="background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; margin-bottom: 18px;">
-            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">MEVCUT ROBUX BAKİYEN</div>
-            <div id="side-balance" style="font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 800; color: var(--roblox-green);">0 R$</div>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
-            <a href="yatir.html" class="btn btn-primary">➕ Yatır</a>
-            <a href="cek.html" class="btn btn-outline">💸 Çek</a>
-          </div>
-          <button onclick="cynoUserLogout()" class="btn btn-danger" style="width: 100%; background: #ff4b4b; color: #fff; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 700;">Hesaptan Çıkış Yap</button>
+        <div id="auth-buttons">
+          <!-- Giriş durumuna göre dinamik dolacak -->
         </div>
-      </aside>
+      </div>
     </div>
+
+    <!-- CANLI İŞLEM AKIŞI (TICKER) -->
+    <div class="ticker-bar">
+      <span class="official-badge" style="font-size: 10px;">CANLI AKIŞ</span>
+      <div id="live-ticker-text" style="font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        🚀 Canlı sistem aktif! Yatırım ve çekim talepleri anında işleniyor.
+      </div>
+    </div>
+
+    <!-- ANA HERO VE HIZLI KATLAMA WIDGET -->
+    <div class="hero-grid">
+      <div>
+        <span class="official-badge" style="margin-bottom: 12px; display: inline-block;">TÜRKİYE'NİN EN HIZLI PLATFORMU</span>
+        <h1 style="font-size: 40px; font-weight: 800; margin-bottom: 15px; color: #fff; line-height: 1.2;">Roblox Bakiyeni Katla, Saniyeler İçinde Çek!</h1>
+        <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 25px;">
+          CynoRobux; Gamepass yatırımları, anında çekimler ve şans oyunlarıyla kesintisiz eğlence sunar. Kayıt olan herkese <span style="color: var(--roblox-green); font-weight: 700;">+5 R$ Bonus</span> hediye!
+        </p>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 30px;">
+          <a href="yatir.html" class="btn btn-primary" style="padding: 14px 26px; font-size: 15px; text-decoration: none;">➕ Gamepass ile Yatır</a>
+          <a href="cek.html" class="btn btn-outline" style="padding: 14px 26px; font-size: 15px; text-decoration: none;">💸 Bakiye Çek</a>
+        </div>
+
+        <!-- İSTATİSTİK KARTLARI -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+          <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 14px; border-radius: 14px;">
+            <div style="font-size: 11px; color: var(--text-muted);">Aktif Oyuncu</div>
+            <div style="font-size: 20px; font-weight: 800; color: #fff; margin-top: 4px;">2,150+</div>
+          </div>
+          <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 14px; border-radius: 14px;">
+            <div style="font-size: 11px; color: var(--text-muted);">Ödenen Robux</div>
+            <div style="font-size: 20px; font-weight: 800; color: var(--roblox-green); margin-top: 4px;">620K+ R$</div>
+          </div>
+          <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 14px; border-radius: 14px;">
+            <div style="font-size: 11px; color: var(--text-muted);">Güvenilirlik</div>
+            <div style="font-size: 20px; font-weight: 800; color: #fff; margin-top: 4px;">%100</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HIZLI KATLAMA OYUNU WIDGET -->
+      <div class="game-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 18px; font-weight: 700; color: #fff; margin: 0;">🎲 Hızlı Katla (X2)</h3>
+          <span style="padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; background: rgba(0,255,136,0.15); color: var(--roblox-green);">AKTİF OYUN</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">Bakiyeni seç, şansını dene ve paranı anında ikiye katla!</p>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label style="font-size: 11px; color: var(--text-muted);">Bahis Miktarı (R$)</label>
+          <input type="number" id="game-bet-amount" class="form-control" value="10" min="5" style="margin-top: 4px;">
+        </div>
+
+        <div id="game-result-box" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 14px; font-weight: 700; font-size: 14px; color: #fff;">
+          Sonuç Bekleniyor...
+        </div>
+
+        <button onclick="playMultiplierGame()" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px;">
+          🚀 Çarkı Çevir & Katla (X2)
+        </button>
+      </div>
+    </div>
+
+    <!-- OYUNLAR & ÖZELLİKLER LOBİSİ -->
+    <h3 style="font-size: 20px; font-weight: 800; color: #fff; margin-top: 40px; margin-bottom: 15px;">🎮 Platform Oyunları ve Modlar</h3>
+    <div class="games-grid">
+      <div class="game-card-item">
+        <div style="font-size: 28px; margin-bottom: 10px;">🎯</div>
+        <h4 style="font-size: 16px; color: #fff; margin-bottom: 6px;">Crash (Çarpan) Oyunu</h4>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Çarpan yükselirken doğru zamanda bozdur, büyük ödülü kap!</p>
+        <button onclick="alert('Crash modu yakında aktifleşecek kanka!')" class="btn btn-outline" style="width: 100%; font-size: 12px; padding: 8px;">Yakında 🚀</button>
+      </div>
+
+      <div class="game-card-item">
+        <div style="font-size: 28px; margin-bottom: 10px;">📦</div>
+        <h4 style="font-size: 16px; color: #fff; margin-bottom: 6px;">Robux Kasa Açılımı</h4>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Özel kasaları aç, yatırdığından kat kat fazlasını kazanma şansı yakala.</p>
+        <button onclick="alert('Kasa açılımı yakında aktifleşecek kanka!')" class="btn btn-outline" style="width: 100%; font-size: 12px; padding: 8px;">Yakında 🚀</button>
+      </div>
+
+      <div class="game-card-item">
+        <div style="font-size: 28px; margin-bottom: 10px;">🪙</div>
+        <h4 style="font-size: 16px; color: #fff; margin-bottom: 6px;">Coinflip (Yazı-Tura)</h4>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Rakibini seç veya kendi odanı kur, şansını bire bir kapışmada dene.</p>
+        <button onclick="alert('Coinflip modu yakında aktifleşecek kanka!')" class="btn btn-outline" style="width: 100%; font-size: 12px; padding: 8px;">Yakında 🚀</button>
+      </div>
+    </div>
+
   </div>
 
   <script src="app.js"></script>
-  <script>
-    function switchAuthTab(tab) {
-      const loginForm = document.getElementById('quick-login-form');
-      const regForm = document.getElementById('quick-register-form');
-      const tabLogin = document.getElementById('tab-login');
-      const tabReg = document.getElementById('tab-register');
-      if (tab === 'login') {
-        loginForm.style.display = 'block';
-        regForm.style.display = 'none';
-        tabLogin.classList.add('active');
-        tabReg.classList.remove('active');
-      } else {
-        loginForm.style.display = 'none';
-        regForm.style.display = 'block';
-        tabLogin.classList.remove('active');
-        tabReg.classList.add('active');
-      }
-    }
-
-    window.cynoUserLogout = function() {
-      localStorage.removeItem('cynoUser');
-      localStorage.removeItem('cynoBakiye');
-      alert("Çıkış yapıldı.");
-      window.location.reload();
-    };
-  </script>
-
-  <!-- Firebase Canlı Entegrasyon Scripti -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
@@ -229,85 +150,111 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       const currentUser = localStorage.getItem('cynoUser');
-      const authForms = document.getElementById('sidebar-auth-forms');
-      const userProfile = document.getElementById('sidebar-user-profile');
-      
-      if (currentUser) {
-        // Kullanıcı giriş yapmışsa sol paneli gizle, profil kartını göster ve bakiyeyi Firebase'den çek
-        const userRef = ref(db, 'users/' + currentUser);
-        get(userRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-            const bakiye = data.bakiye || 0;
-            
-            document.getElementById('side-username').textContent = currentUser;
-            document.getElementById('side-balance').textContent = bakiye + ' R$';
-            localStorage.setItem('cynoBakiye', bakiye);
+      const authContainer = document.getElementById('auth-buttons');
+      const bakiyeText = document.getElementById('live-bakiye');
 
-            authForms.style.display = 'none';
-            userProfile.style.display = 'block';
-          }
-        });
+      if (!currentUser) {
+        bakiyeText.textContent = '0 R$';
+        authContainer.innerHTML = `
+          <a href="giris.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 13px; text-decoration: none; margin-right: 8px;">Giriş Yap</a>
+          <a href="kayit.html" class="btn btn-primary" style="padding: 8px 16px; font-size: 13px; text-decoration: none;">Kayıt Ol</a>
+        `;
+        return;
       }
-    });
 
-    // Hızlı Giriş
-    window.handleQuickLogin = function(e) {
-      e.preventDefault();
-      const u = document.getElementById('ql-user').value.trim();
-      const p = document.getElementById('ql-pass').value;
-
-      if (!u || !p) return;
-
-      const userRef = ref(db, 'users/' + u);
-      get(userRef).then((snapshot) => {
-        if (!snapshot.exists()) {
-          alert("Böyle bir kullanıcı bulunamadı kanka!");
-          return;
-        }
-        const data = snapshot.val();
-        if (data.banned) {
-          alert("Bu hesap banlanmıştır!");
-          return;
-        }
-        if (data.password === p) {
-          localStorage.setItem('cynoUser', u);
-          localStorage.setItem('cynoBakiye', data.bakiye || 0);
-          alert("Giriş başarılı! 🚀");
-          window.location.reload();
-        } else {
-          alert("Şifre hatalı!");
-        }
-      });
-    };
-
-    // Hızlı Kayıt (+5 R$ Bonus)
-    window.handleQuickRegister = function(e) {
-      e.preventDefault();
-      const u = document.getElementById('qr-user').value.trim();
-      const p = document.getElementById('qr-pass').value;
-
-      if (!u || !p) return;
-
-      const userRef = ref(db, 'users/' + u);
+      // Firebase'den anlık bakiye çek
+      const userRef = ref(db, 'users/' + currentUser);
       get(userRef).then((snapshot) => {
         if (snapshot.exists()) {
-          alert("Bu kullanıcı adı zaten alınmış kanka!");
+          const userData = snapshot.val();
+          const guncelBakiye = userData.bakiye || 0;
+          
+          bakiyeText.textContent = guncelBakiye + ' R$';
+          localStorage.setItem('cynoBakiye', guncelBakiye);
+
+          authContainer.innerHTML = `
+            <span style="color: #fff; font-weight: 700; font-size: 13px; margin-right: 10px;">👤 ${currentUser}</span>
+            <button onclick="cikisYap()" class="btn btn-outline" style="padding: 6px 12px; font-size: 11px; border-color: #ff4b4b; color: #ff4b4b;">Çıkış</button>
+          `;
+        }
+      });
+
+      loadLiveTicker();
+    });
+
+    window.cikisYap = function() {
+      localStorage.removeItem('cynoUser');
+      localStorage.removeItem('cynoBakiye');
+      alert("Çıkış yapıldı.");
+      window.location.reload();
+    };
+
+    // X2 Katlama Oyunu (Firebase Bakiye Düşme/Artma Entegrasyonlu)
+    window.playMultiplierGame = function() {
+      const currentUser = localStorage.getItem('cynoUser');
+      if (!currentUser) {
+        alert("Oynamak için önce giriş yapmalısın kanka!");
+        window.location.href = 'giris.html';
+        return;
+      }
+
+      const betInput = Number(document.getElementById('game-bet-amount').value);
+      if (isNaN(betInput) || betInput < 5) {
+        alert("Minimum bahis tutarı 5 R$ olmalıdır!");
+        return;
+      }
+
+      const userRef = ref(db, 'users/' + currentUser);
+      get(userRef).then((snapshot) => {
+        if (!snapshot.exists()) return;
+        const userData = snapshot.val();
+        const mevcutBakiye = Number(userData.bakiye) || 0;
+
+        if (mevcutBakiye < betInput) {
+          alert(`Yetersiz bakiye! Mevcut bakiyen: ${mevcutBakiye} R$`);
           return;
         }
 
-        set(userRef, {
-          password: p,
-          bakiye: 5, // Kayıt bonusu 5 R$
-          banned: false
-        }).then(() => {
-          localStorage.setItem('cynoUser', u);
-          localStorage.setItem('cynoBakiye', 5);
-          alert("Kayıt başarılı! +5 R$ bonus hesabına eklendi 🎉");
-          window.location.reload();
-        });
+        const resultBox = document.getElementById('game-result-box');
+        resultBox.textContent = "🎲 Çark dönüyor...";
+        resultBox.style.color = "#ffcc00";
+
+        setTimeout(() => {
+          const kazandi = Math.random() < 0.5;
+          let yeniBakiye = mevcutBakiye;
+
+          if (kazandi) {
+            yeniBakiye += betInput;
+            resultBox.textContent = `🎉 TEBRİKLER! ${betInput} R$ Kazandın! (+${betInput} R$)`;
+            resultBox.style.color = "var(--roblox-green)";
+          } else {
+            yeniBakiye -= betInput;
+            resultBox.textContent = `😢 KAPTIRDIN! ${betInput} R$ Kaybettin.`;
+            resultBox.style.color = "#ff4b4b";
+          }
+
+          update(userRef, { bakiye: yeniBakiye }).then(() => {
+            localStorage.setItem('cynoBakiye', yeniBakiye);
+            document.getElementById('live-bakiye').textContent = yeniBakiye + ' R$';
+          });
+        }, 1200);
       });
     };
+
+    function loadLiveTicker() {
+      const ticker = document.getElementById('live-ticker-text');
+      const messages = [
+        "🔥 Son İşlem: Bir oyuncu Gamepass ile 500 R$ yatırım yaptı!",
+        "⚡ Son İşlem: 1,000 R$ tutarında çekim talebi başarıyla onaylandı.",
+        "🎉 Son İşlem: Bir kullanıcı Hızlı Katla oyununda bakiyesini 2'ye katladı!",
+        "💎 CynoRobux güvenli altyapısıyla 7/24 kesintisiz hizmet veriyor."
+      ];
+      let i = 0;
+      setInterval(() => {
+        i = (i + 1) % messages.length;
+        ticker.textContent = messages[i];
+      }, 4000);
+    }
   </script>
 </body>
 </html>
