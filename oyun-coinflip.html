@@ -106,5 +106,52 @@
       }, 650);
     }
   </script>
+<!-- Oyunun kendi kodları burada biter -->
+    
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
+        authDomain: "cynorobux.firebaseapp.com",
+        databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
+        projectId: "cynorobux",
+        storageBucket: "cynorobux.firebasestorage.app",
+        messagingSenderId: "854181611047",
+        appId: "1:854181611047:web:db37f6a281bca890d67002",
+        measurementId: "G-8PQFNEH1F3"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const currentUser = localStorage.getItem('cynoUser');
+        const authContainer = document.getElementById('auth-buttons') || document.querySelector('.nav-auth') || document.getElementById('user-info-area');
+        const bakiyeText = document.getElementById('live-bakiye') || document.getElementById('user-bakiye');
+
+        if (!currentUser) {
+          if (bakiyeText) bakiyeText.textContent = '0 R$';
+          return;
+        }
+
+        const userRef = ref(db, 'users/' + currentUser);
+        get(userRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            const guncelBakiye = userData.bakiye || 0;
+            
+            if (bakiyeText) bakiyeText.textContent = guncelBakiye + ' R$';
+            localStorage.setItem('cynoBakiye', guncelBakiye);
+
+            const userAdText = document.getElementById('username-display');
+            if (userAdText) userAdText.textContent = currentUser;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
 </body>
 </html>
