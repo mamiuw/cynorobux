@@ -11,7 +11,7 @@
     <div style="width: 100%; max-width: 400px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 30px; text-align: center;">
       <span class="official-badge" style="margin-bottom: 10px; display: inline-block;">YÖNETİCİ ÖZEL</span>
       <h2 style="margin-bottom: 15px; color: #fff;">🔐 Admin Girişi</h2>
-      <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Yönetim paneline erişmek için şifreni gir.</p>
+      <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Yönetim paneline erişmek için admin şifreni gir.</p>
       
       <input type="password" id="admin-pass-input" class="form-control" placeholder="Admin Şifresi" style="margin-bottom: 15px; width: 100%; box-sizing: border-box; padding: 12px;">
       <button onclick="checkAdminLogin()" class="btn btn-primary" style="width: 100%; padding: 12px;">Giriş Yap</button>
@@ -19,12 +19,13 @@
   </div>
 
   <script>
-    // İstediğin admin şifresini buraya yazabilirsin
-    const ADMIN_SECRET = "cyno2026admin";
+    // İki farklı admin şifresi (İkisi de aynı panele giriş yapar)
+    const ADMIN_PASSWORDS = ["mami123", "marlon123"];
 
     function checkAdminLogin() {
       const p = document.getElementById('admin-pass-input').value;
-      if (p === ADMIN_SECRET) {
+      
+      if (ADMIN_PASSWORDS.includes(p)) {
         localStorage.setItem('cynoAdminAuth', 'true');
         alert("Giriş başarılı! Yönetim paneline yönlendiriliyorsun... 🚀");
         window.location.href = 'admin.html';
