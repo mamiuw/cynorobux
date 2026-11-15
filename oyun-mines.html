@@ -7,59 +7,133 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="container" style="max-width: 1200px; padding: 20px 15px;">
+    
+    <!-- ÜST MENÜ / NAVBAR -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 30px;">
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <h2 style="font-size: 24px; font-weight: 800; color: #fff; margin: 0;">Cyno<span style="color: var(--roblox-green);">Robux</span></h2>
+        <div style="display: flex; gap: 15px;">
+          <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Ana Sayfa</a>
+          <a href="oyunlar.html" style="color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;">Oyunlar</a>
+          <a href="yatir.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Yatır</a>
+          <a href="cek.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Çek</a>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 12px; color: var(--text-muted);">Bakiye:</span>
+          <span id="live-bakiye" style="font-weight: 800; color: var(--roblox-green); font-size: 16px;">0 R$</span>
+        </div>
+        <div id="auth-buttons">
+          <!-- Oturum durumuna göre dinamik dolacak -->
+        </div>
+      </div>
+    </div>
+
     <div style="margin-bottom: 18px;">
       <a href="oyunlar.html" style="color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600;">← Oyunlara Dön</a>
     </div>
 
-    <div class="game-layout">
-      <div class="control-panel">
-        <h2 style="font-size: 20px; margin-bottom: 18px;">💎 Robux Mines</h2>
+    <div class="game-layout" style="display: grid; grid-template-columns: 320px 1fr; gap: 24px;">
+      <div class="control-panel" style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px;">
+        <h2 style="font-size: 20px; margin-bottom: 18px; color: #fff;">💎 Robux Mines</h2>
 
-        <div class="form-group">
-          <label>Yatırılacak Robux (R$)</label>
-          <input type="number" id="mines-bet" class="form-control" value="100" min="50">
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label style="font-size: 12px; color: var(--text-muted);">Yatırılacak Robux (R$)</label>
+          <input type="number" id="mines-bet" class="form-control" value="50" min="50" style="margin-top: 6px;">
         </div>
 
-        <div class="form-group">
-          <label>Mayın Sayısı</label>
-          <select id="mines-count" class="form-control">
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label style="font-size: 12px; color: var(--text-muted);">Mayın Sayısı</label>
+          <select id="mines-count" class="form-control" style="margin-top: 6px;">
             <option value="3">3 Mayın (Kolay)</option>
             <option value="5" selected>5 Mayın (Orta)</option>
             <option value="8">8 Mayın (Zor • Yüksek Çarpan)</option>
           </select>
         </div>
 
-        <button id="mines-start-btn" onclick="startMines()" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px;">
+        <button id="mines-start-btn" onclick="startMines()" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; cursor: pointer;">
           💎 Oyunu Başlat
         </button>
 
-        <button id="mines-cashout-btn" onclick="cashoutMines()" class="btn btn-primary" style="display: none; width: 100%; padding: 14px; font-size: 15px; background: #ffa502; color: #000;">
+        <button id="mines-cashout-btn" onclick="cashoutMines()" class="btn btn-primary" style="display: none; width: 100%; padding: 14px; font-size: 15px; background: #ffa502; color: #000; cursor: pointer;">
           💰 Ödülü Topla (<span id="mines-win-val">0</span> R$)
         </button>
 
-        <div style="margin-top: 20px; background: var(--bg-dark); padding: 14px; border-radius: 12px; border: 1px solid var(--border-color);">
+        <div style="margin-top: 20px; background: rgba(0,0,0,0.3); padding: 14px; border-radius: 12px; border: 1px solid var(--border-color);">
           <div style="font-size: 12px; color: var(--text-muted);">ANLIK ÇARPAN</div>
-          <div id="mines-mult" style="font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 800; color: var(--roblox-green);">1.00x</div>
+          <div id="mines-mult" style="font-family: monospace; font-size: 24px; font-weight: 800; color: var(--roblox-green);">1.00x</div>
         </div>
       </div>
 
-      <div class="arena-panel">
-        <div id="mines-grid" class="mines-grid"></div>
+      <div class="arena-panel" style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-align: center;">
+        <div id="mines-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 400px; margin: 0 auto;"></div>
         <p id="mines-status" style="margin-top: 18px; font-size: 14px; color: var(--text-muted);">Sol panelden bahis miktarını seç ve oyunu başlat.</p>
       </div>
     </div>
   </div>
 
-  <script src="app.js"></script>
-  <script>
-    renderLayout('oyunlar');
+  <!-- FIREBASE VE OYUN MANTIĞI (TEK PARÇA) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
+      authDomain: "cynorobux.firebaseapp.com",
+      databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
+      projectId: "cynorobux",
+      storageBucket: "cynorobux.firebasestorage.app",
+      messagingSenderId: "854181611047",
+      appId: "1:854181611047:web:db37f6a281bca890d67002",
+      measurementId: "G-8PQFNEH1F3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
     let minesActive = false;
     let bombIndices = [];
     let revealedCount = 0;
     let minesBet = 0;
     let minesMultiplier = 1.00;
+    let currentBalance = 0;
+    let currentUser = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      currentUser = localStorage.getItem('cynoUser');
+      const authContainer = document.getElementById('auth-buttons');
+      const bakiyeText = document.getElementById('live-bakiye');
+
+      if (!currentUser) {
+        bakiyeText.textContent = '0 R$';
+        authContainer.innerHTML = `
+          <a href="giris.html" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; text-decoration: none; margin-right: 8px;">Giriş Yap</a>
+          <a href="kayit.html" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; text-decoration: none;">Kayıt Ol</a>
+        `;
+        buildEmptyGrid();
+        return;
+      }
+
+      // Firebase'den anlık bakiye çek
+      const userRef = ref(db, 'users/' + currentUser);
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          currentBalance = Number(userData.bakiye) || 0;
+          bakiyeText.textContent = currentBalance + ' R$';
+          localStorage.setItem('cynoBakiye', currentBalance);
+
+          authContainer.innerHTML = `
+            <span style="color: #fff; font-weight: 700; font-size: 13px; margin-right: 10px;">👤 ${currentUser}</span>
+            <button onclick="localStorage.removeItem('cynoUser'); window.location.reload();" class="btn btn-outline" style="padding: 5px 10px; font-size: 11px; border-color: #ff4b4b; color: #ff4b4b; cursor:pointer;">Çıkış</button>
+          `;
+        }
+        buildEmptyGrid();
+      });
+    });
 
     function buildEmptyGrid() {
       const grid = document.getElementById('mines-grid');
@@ -68,26 +142,35 @@
         const btn = document.createElement('button');
         btn.className = 'mine-tile';
         btn.disabled = true;
-        btn.textContent = '?';
+        btn.textContent = '❓';
+        btn.style.cssText = "aspect-ratio: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 10px; font-size: 18px; cursor: not-allowed; color: #777;";
         grid.appendChild(btn);
       }
     }
-    buildEmptyGrid();
 
-    function startMines() {
-      const user = AppState.getUser();
-      if (!user || !user.loggedIn) {
-        showToast('Oynamak için giriş yapmalısın!', true);
+    window.startMines = function() {
+      if (!currentUser) {
+        alert("Oynamak için giriş yapmalısın kanka!");
+        window.location.href = 'giris.html';
         return;
       }
+
       const bet = Number(document.getElementById('mines-bet').value);
       const bombs = Number(document.getElementById('mines-count').value);
-      if (bet < 50 || bet > user.balance) {
-        showToast('Geçersiz miktar veya yetersiz bakiye (Min: 50 R$)!', true);
+
+      if (isNaN(bet) || bet < 50) {
+        alert("Minimum bahis tutarı 50 R$ olmalıdır!");
+        return;
+      }
+      if (currentBalance < bet) {
+        alert(`Yetersiz bakiye! Mevcut bakiyen: ${currentBalance} R$`);
         return;
       }
 
-      AppState.addBalance(-bet, 'Robux Mines Bahis');
+      // Bakiyeden düş ve Firebase'e kaydet
+      currentBalance -= bet;
+      updateBakiyeInFirebase(currentBalance);
+
       minesBet = bet;
       minesActive = true;
       revealedCount = 0;
@@ -102,119 +185,86 @@
       document.getElementById('mines-mult').textContent = '1.00x';
       document.getElementById('mines-win-val').textContent = bet;
       document.getElementById('mines-start-btn').style.display = 'none';
-      document.getElementById('mines-cashout-btn').style.display = 'inline-flex';
-      document.getElementById('mines-status').textContent = 'Yeşil Robux elmaslarını bul! İstediğin an ödülü topla.';
+      document.getElementById('mines-cashout-btn').style.display = 'inline-block';
+      document.getElementById('mines-status').textContent = 'Yeşil elmasları bul! İstediğin an ödülü topla.';
 
       const grid = document.getElementById('mines-grid');
       grid.innerHTML = '';
       for (let i = 0; i < 25; i++) {
         const btn = document.createElement('button');
         btn.className = 'mine-tile';
+        btn.textContent = '🟩';
+        btn.style.cssText = "aspect-ratio: 1; background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); border-radius: 10px; font-size: 18px; cursor: pointer; transition: 0.2s;";
         btn.onclick = () => clickTile(i, btn);
         grid.appendChild(btn);
       }
-    }
+    };
 
-    function clickTile(idx, btn) {
+    window.clickTile = function(idx, btn) {
       if (!minesActive || btn.disabled) return;
       btn.disabled = true;
+      btn.style.cursor = "default";
 
       const bombs = Number(document.getElementById('mines-count').value);
 
       if (bombIndices.includes(idx)) {
-        btn.classList.add('revealed-bomb');
         btn.textContent = '💣';
+        btn.style.background = "rgba(255,75,75,0.2)";
         revealAllBombs();
         minesActive = false;
-        document.getElementById('mines-start-btn').style.display = 'inline-flex';
+        document.getElementById('mines-start-btn').style.display = 'inline-block';
         document.getElementById('mines-cashout-btn').style.display = 'none';
-        document.getElementById('mines-status').innerHTML = '<span style="color:var(--danger); font-weight:700;">💥 Mayına bastın! Bahis kaybedildi.</span>';
-        showToast('Mayına bastın!', true);
+        document.getElementById('mines-status').innerHTML = '<span style="color:#ff4b4b; font-weight:700;">💥 Mayına bastın! Bahis kaybedildi.</span>';
       } else {
         revealedCount++;
-        btn.classList.add('revealed-gem');
-        btn.textContent = '🟩';
+        btn.textContent = '💎';
+        btn.style.background = "rgba(0,255,136,0.2)";
+        
         const stepFactor = 1 + (bombs * 0.055);
         minesMultiplier = +(minesMultiplier * stepFactor).toFixed(2);
         const currentWin = Math.floor(minesBet * minesMultiplier);
+        
         document.getElementById('mines-mult').textContent = minesMultiplier.toFixed(2) + 'x';
         document.getElementById('mines-win-val').textContent = currentWin;
       }
-    }
+    };
 
     function revealAllBombs() {
       const tiles = document.getElementById('mines-grid').children;
       for (let i = 0; i < 25; i++) {
         tiles[i].disabled = true;
         if (bombIndices.includes(i)) {
-          tiles[i].classList.add('revealed-bomb');
           tiles[i].textContent = '💣';
+          tiles[i].style.background = "rgba(255,75,75,0.2)";
         }
       }
     }
 
-    function cashoutMines() {
+    window.cashoutMines = function() {
       if (!minesActive) return;
       if (revealedCount === 0) {
-        showToast('Ödül toplamak için en az 1 kutu açmalısın!', true);
+        alert("Ödül toplamak için en az 1 elmas bulmalısın!");
         return;
       }
       minesActive = false;
       const winAmount = Math.floor(minesBet * minesMultiplier);
-      AppState.addBalance(winAmount, `Mines Kazancı (${minesMultiplier.toFixed(2)}x)`);
+      
+      currentBalance += winAmount;
+      updateBakiyeInFirebase(currentBalance);
+
       revealAllBombs();
-      document.getElementById('mines-start-btn').style.display = 'inline-flex';
+      document.getElementById('mines-start-btn').style.display = 'inline-block';
       document.getElementById('mines-cashout-btn').style.display = 'none';
       document.getElementById('mines-status').innerHTML = `<span style="color:var(--roblox-green); font-weight:800;">🎉 Tebrikler! +${winAmount} R$ hesabına aktarıldı!</span>`;
-      showToast(`+${winAmount} R$ kazandın!`);
+    };
+
+    function updateBakiyeInFirebase(yeniBakiye) {
+      const userRef = ref(db, 'users/' + currentUser);
+      update(userRef, { bakiye: yeniBakiye }).then(() => {
+        document.getElementById('live-bakiye').textContent = yeniBakiye + ' R$';
+        localStorage.setItem('cynoBakiye', yeniBakiye);
+      });
     }
   </script>
-  <!-- Oyunun kendi kodları burada biter -->
-    
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
-        authDomain: "cynorobux.firebaseapp.com",
-        databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
-        projectId: "cynorobux",
-        storageBucket: "cynorobux.firebasestorage.app",
-        messagingSenderId: "854181611047",
-        appId: "1:854181611047:web:db37f6a281bca890d67002",
-        measurementId: "G-8PQFNEH1F3"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const db = getDatabase(app);
-
-      window.addEventListener('DOMContentLoaded', () => {
-        const currentUser = localStorage.getItem('cynoUser');
-        const authContainer = document.getElementById('auth-buttons') || document.querySelector('.nav-auth') || document.getElementById('user-info-area');
-        const bakiyeText = document.getElementById('live-bakiye') || document.getElementById('user-bakiye');
-
-        if (!currentUser) {
-          if (bakiyeText) bakiyeText.textContent = '0 R$';
-          return;
-        }
-
-        const userRef = ref(db, 'users/' + currentUser);
-        get(userRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            const userData = snapshot.val();
-            const guncelBakiye = userData.bakiye || 0;
-            
-            if (bakiyeText) bakiyeText.textContent = guncelBakiye + ' R$';
-            localStorage.setItem('cynoBakiye', guncelBakiye);
-
-            const userAdText = document.getElementById('username-display');
-            if (userAdText) userAdText.textContent = currentUser;
-          }
-        });
-      });
-    </script>
-  </body>
-</html>
 </body>
 </html>
