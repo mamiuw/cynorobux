@@ -3,208 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CynoRobux Admin Paneli</title>
+  <title>Yönetim Paneli — CynoRobux</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px; margin-bottom: 24px; }
+    .table-container { width: 100%; overflow-x: auto; margin-top: 12px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); }
+    th { color: var(--text-muted); font-weight: 600; background: rgba(0,0,0,0.2); }
+    .badge-tag { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+    .badge-success { background: rgba(0,255,136,0.15); color: var(--roblox-green); }
+    .badge-danger { background: rgba(255,75,75,0.15); color: #ff4b4b; }
+    .action-btn { padding: 6px 12px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-size: 12px; margin-right: 4px; }
+  </style>
 </head>
 <body>
-  <div class="container" style="max-width: 1200px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 16px;">
+  <!-- Güvenlik Kontrolü: Admin girişi yapılmadıysa giriş sayfasına at -->
+  <script>
+    if (localStorage.getItem('cynoAdminAuth') !== 'true') {
+      window.location.href = 'admin-giris.html';
+    }
+  </script>
+
+  <div class="container" style="max-width: 1200px; padding: 30px 15px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
       <div>
-        <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">YÖNETİCİ KONTROL MERKEZİ</span>
-        <h1 style="font-size: 28px; font-weight: 800;">🛡️ CynoRobux Admin Paneli</h1>
-        <p style="color: var::text-muted); font-size: 14px;">Hoş geldin <span id="admin-name-span" style="color: var(--roblox-green); font-weight: 700;">Admin</span>. Kullanıcı talepleri ve sistem ayarları.</p>
+        <span class="official-badge" style="margin-bottom: 6px; display: inline-block;">YÖNETİM MERKEZİ</span>
+        <h1 style="font-size: 28px; font-weight: 800;">CynoRobux Admin Paneli</h1>
       </div>
-      <div style="display: flex; gap: 10px;">
-        <a href="index.html" class="btn btn-outline">Ana Siteye Git</a>
-        <button onclick="adminLogout()" class="btn btn-danger">Çıkış Yap</button>
+      <button onclick="adminLogout()" class="btn btn-outline" style="border-color: #ff4b4b; color: #ff4b4b;">Çıkış Yap</button>
+    </div>
+
+    <!-- İSTATİSTİK KARTLARI -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 30px;">
+      <div class="admin-card" style="margin-bottom: 0;">
+        <div style="color: var(--text-muted); font-size: 13px;">Toplam Kullanıcı</div>
+        <div id="stat-total-users" style="font-size: 26px; font-weight: 800; color: #fff; margin-top: 5px;">0</div>
+      </div>
+      <div class="admin-card" style="margin-bottom: 0;">
+        <div style="color: var(--text-muted); font-size: 13px;">Bekleyen / Toplam İşlem</div>
+        <div id="stat-total-requests" style="font-size: 26px; font-weight: 800; color: var(--roblox-green); margin-top: 5px;">0</div>
       </div>
     </div>
 
-    <!-- Discord Link Ayarla -->
-    <div style="background: var(--bg-panel); border: 1px solid var::border-color); border-radius: 18px; padding: 22px; margin-bottom: 24px;">
-      <h3 style="font-size: 16px; margin-bottom: 12px;">💬 Discord Sunucu Linkini Güncelle</h3>
-      <div style="display: flex; gap: 12px;">
-        <input type="url" id="discord-input-url" class="form-control" placeholder="https://discord.gg/senin-sunucun" style="flex: 1;">
-        <button onclick="saveDiscordLink()" class="btn btn-primary">Kaydet</button>
+    <!-- TALEPLER (Yatırım & Çekim) -->
+    <div class="admin-card">
+      <h3 style="font-size: 18px; margin-bottom: 10px;">📥 Gelen Yatırım ve Çekim Talepleri</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Kullanıcı</th>
+              <th>İşlem Türü</th>
+              <th>Detay / Tutar</th>
+              <th>Tarih</th>
+              <th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody id="requests-table-body">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- Gelen Talepler -->
-    <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 18px; padding: 24px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="font-size: 18px; font-weight: 800;">📥 Kullanıcı Yatırım ve Çekim Talepleri</h3>
-        <button onclick="clearRequests()" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">Tümünü Temizle</button>
+    <!-- KULLANICI LİSTESİ VE YÖNETİMİ -->
+    <div class="admin-card">
+      <h3 style="font-size: 18px; margin-bottom: 10px;">👥 Kayıtlı Kullanıcılar ve Bakiye Yönetimi</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Kullanıcı Adı</th>
+              <th>Şifre</th>
+              <th>Bakiye</th>
+              <th>Durum</th>
+              <th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
       </div>
-
-      <table class="feed-table">
-        <thead>
-          <tr>
-            <th>Talep ID</th>
-            <th>Kullanıcı</th>
-            <th>İşlem Türü</th>
-            <th>Detay / Link</th>
-            <th>Miktar</th>
-            <th>Durum</th>
-            <th>Tarih</th>
-            <th>İşlem</th>
-          </tr>
-        </thead>
-        <tbody id="admin-req-tbody">
-          <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Henüz kullanıcı talebi bulunmuyor.</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
   <script src="app.js"></script>
-  <script>
-    // Check Admin Auth
-    const adminAuth = localStorage.getItem('cynorobux_admin_auth');
-    if (!adminAuth) {
-      alert('Bu sayfaya erişmek için önce admin girişi yapmalısınız!');
-      window.location.href = 'admin-giris.html';
-    } else {
-      const authObj = JSON.parse(adminAuth);
-      document.getElementById('admin-name-span').textContent = authObj.user.toUpperCase();
-    }
-
-    // Load Discord link
-    const savedDiscord = localStorage.getItem('cynorobux_discord');
-    if(savedDiscord) {
-      document.getElementById('discord-input-url').value = savedDiscord;
-    }
-
-    function saveDiscordLink() {
-      const url = document.getElementById('discord-input-url').value.trim();
-      if(!url) {
-        showToast('Geçerli bir URL girin', true);
-        return;
-      }
-      localStorage.setItem('cynorobux_discord', url);
-      showToast('Discord sunucu bağlantısı başarıyla güncellendi!');
-    }
-
-    function renderAdminRequests() {
-      const reqs = JSON.parse(localStorage.getItem('cynorobux_requests') || '[]');
-      const tbody = document.getElementById('admin-req-tbody');
-
-      if (reqs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Henüz kullanıcı talebi bulunmuyor.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = reqs.map((r, idx) => `
-        <tr>
-          <td><code>${r.id}</code></td>
-          <td><strong>${r.username}</strong></td>
-          <td><span class="official-badge">${r.type}</span></td>
-          <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${r.detail}">${r.detail}</td>
-          <td style="font-family:'JetBrains Mono'; font-weight:700; color:var(--roblox-green);">${r.amount}</td>
-          <td><span style="color: ${r.status === 'Onaylandı' ? 'var(--roblox-green)' : (r.status === 'Reddedildi' ? 'var(--danger)' : 'var(--warning)')}; font-weight:700;">${r.status}</span></td>
-          <td style="color: var(--text-muted); font-size:12px;">${r.date}</td>
-          <td>
-            ${r.status === 'Beklemede' ? `
-              <button onclick="updateReqStatus(${idx}, 'Onaylandı')" class="btn btn-primary" style="padding: 4px 10px; font-size: 11px; margin-right: 4px;">Onayla</button>
-              <button onclick="updateReqStatus(${idx}, 'Reddedildi')" class="btn btn-danger" style="padding: 4px 10px; font-size: 11px;">Reddet</button>
-            ` : `<span style="font-size: 12px; color: var(--text-muted);">İşlendi</span>`}
-          </td>
-        </tr>
-      `).join('');
-    }
-    renderAdminRequests();
-
-    function updateReqStatus(index, newStatus) {
-      const reqs = JSON.parse(localStorage.getItem('cynorobux_requests') || '[]');
-      if(reqs[index]) {
-        reqs[index].status = newStatus;
-        localStorage.setItem('cynorobux_requests', JSON.stringify(reqs));
-        renderAdminRequests();
-        showToast(`Talep durumu değiştirildi: ${newStatus}`);
-      }
-    }
-
-    function clearRequests() {
-      if(confirm('Tüm talepleri silmek istediğinize emin misiniz?')) {
-        localStorage.removeItem('cynorobux_requests');
-        renderAdminRequests();
-        showToast('Tüm talepler temizlendi.');
-      }
-    }
-
-    function adminLogout() {
-      localStorage.removeItem('cynorobux_admin_auth');
-      window.location.href = 'admin-giris.html';
-    }
-  </script>
-<!-- Kullanıcı Listesi Alanı -->
-  <div style="max-width: 800px; margin: 20px auto; background: #181818; padding: 20px; border-radius: 10px; border: 1px solid #333;">
-    <h2 style="color: #00ff88; margin-bottom: 15px;">👥 Kullanıcı Yönetim Paneli</h2>
-    <div id="kullanici-listesi-icerik" style="color: white;">Yükleniyor...</div>
-  </div>
-
-  <script type="module">
-    import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-    // Sayfa yüklendiğinde veritabanından kullanıcıları çek
-    const checkDb = setInterval(() => {
-      if (window.db) {
-        clearInterval(checkDb);
-        const usersRef = ref(window.db, 'users');
-
-        onValue(usersRef, (snapshot) => {
-          const data = snapshot.val();
-          const listeDiv = document.getElementById('kullanici-listesi-icerik');
-          if (!listeDiv) return;
-          
-          listeDiv.innerHTML = '';
-
-          if (!data) {
-            listeDiv.innerHTML = '<p>Henüz kayıtlı kullanıcı yok.</p>';
-            return;
-          }
-
-          Object.keys(data).forEach((userId) => {
-            const user = data[userId];
-            
-            listeDiv.innerHTML += `
-              <div style="background:#222; color:#fff; padding:15px; margin-bottom:10px; border-radius:8px; border: 1px solid #444;">
-                <p><b>ID:</b> <span style="color:#aaa;">${userId}</span></p>
-                <p><b>Kullanıcı Adı:</b> <span style="color:#00ff88;">${user.username || 'Bilinmiyor'}</span></p>
-                <p><b>IP Adresi:</b> ${user.ip || 'Bilinmiyor'}</p>
-                <p><b>Durum:</b> ${user.banned ? '<span style="color:red;">🔴 Banlı</span>' : '<span style="color:lightgreen;">🟢 Aktif</span>'}</p>
-                
-                <div style="margin-top: 10px;">
-                  <button onclick="window.banla('${userId}', ${!user.banned})" style="background:${user.banned ? '#28a745' : '#dc3545'}; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer; font-weight:bold; margin-right:5px;">
-                    ${user.banned ? 'Banı Kaldır' : 'Banla'}
-                  </button>
-                  <button onclick="window.sil('${userId}')" style="background:#555; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer; font-weight:bold;">
-                    Kullanıcıyı Sil
-                  </button>
-                </div>
-              </div>
-            `;
-          });
-        });
-      }
-    }, 100);
-
-    // Banlama Fonksiyonu
-    window.banla = function(userId, durum) {
-      const userRef = ref(window.db, 'users/' + userId);
-      update(userRef, { banned: durum });
-    }
-
-    // Silme Fonksiyonu
-    window.sil = function(userId) {
-      if(confirm("Bu kullanıcıyı veritabanından tamamen silmek istediğine emin misin?")) {
-        const userRef = ref(window.db, 'users/' + userId);
-        remove(userRef);
-      }
-    }
-  </script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, get, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
@@ -219,7 +107,128 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-    window.db = db; 
+
+    window.adminLogout = function() {
+      localStorage.removeItem('cynoAdminAuth');
+      window.location.href = 'admin-giris.html';
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchUsers();
+      fetchRequests();
+    });
+
+    function fetchUsers() {
+      const usersRef = ref(db, 'users');
+      get(usersRef).then((snapshot) => {
+        const tbody = document.getElementById('users-table-body');
+        tbody.innerHTML = '';
+
+        if (!snapshot.exists()) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Kayıtlı kullanıcı yok.</td></tr>`;
+          document.getElementById('stat-total-users').textContent = '0';
+          return;
+        }
+
+        const users = snapshot.val();
+        let count = 0;
+
+        Object.keys(users).forEach((username) => {
+          count++;
+          const u = users[username];
+          const isBanned = u.banned ? true : false;
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td style="font-weight: 700; color: #fff;">${username}</td>
+            <td style="color: var(--text-muted);">${u.password || '*****'}</td>
+            <td><span style="color: var(--roblox-green); font-weight: 700;">${u.bakiye || 0} R$</span></td>
+            <td>${isBanned ? '<span class="badge-tag badge-danger">Yasaklı</span>' : '<span class="badge-tag badge-success">Aktif</span>'}</td>
+            <td>
+              <button class="action-btn" style="background: #333; color: #fff;" onclick="degistirBakiye('${username}', ${u.bakiye || 0})">Bakiye Düzenle</button>
+              ${isBanned ? 
+                `<button class="action-btn badge-success" onclick="userDurum('${username}', false)">Aktif Et</button>` : 
+                `<button class="action-btn badge-danger" onclick="userDurum('${username}', true)">Banla</button>`
+              }
+              <button class="action-btn" style="background: #ff4b4b; color: #fff;" onclick="kullaniciSil('${username}')">Sil</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById('stat-total-users').textContent = count;
+      });
+    }
+
+    function fetchRequests() {
+      const reqRef = ref(db, 'requests');
+      get(reqRef).then((snapshot) => {
+        const tbody = document.getElementById('requests-table-body');
+        tbody.innerHTML = '';
+
+        if (!snapshot.exists()) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Bekleyen talep yok.</td></tr>`;
+          document.getElementById('stat-total-requests').textContent = '0';
+          return;
+        }
+
+        const reqs = snapshot.val();
+        let count = 0;
+
+        Object.keys(reqs).forEach((reqId) => {
+          count++;
+          const r = reqs[reqId];
+          const tarihStr = r.tarih ? new Date(r.tarih).toLocaleString('tr-TR') : 'Bilinmiyor';
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td style="font-weight: 700; color: #fff;">${r.username}</td>
+            <td><span class="badge-tag ${r.tur === 'Yatırım' ? 'badge-success' : 'badge-danger'}">${r.tur}</span></td>
+            <td>${r.detay}</td>
+            <td style="color: var(--text-muted); font-size: 12px;">${tarihStr}</td>
+            <td>
+              <button class="action-btn badge-success" onclick="talepSil('${reqId}')">Onayla / Sil</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById('stat-total-requests').textContent = count;
+      });
+    }
+
+    window.degistirBakiye = function(username, mevcutBakiye) {
+      const yeni = prompt(`${username} için yeni bakiye miktarını gir (R$):`, mevcutBakiye);
+      if (yeni !== null && !isNaN(yeni)) {
+        update(ref(db, 'users/' + username), { bakiye: Number(yeni) }).then(() => {
+          alert("Bakiye güncellendi!");
+          fetchUsers();
+        });
+      }
+    };
+
+    window.userDurum = function(username, durum) {
+      update(ref(db, 'users/' + username), { banned: durum }).then(() => {
+        alert(durum ? `${username} banlandı!` : `${username} banı kaldırıldı!`);
+        fetchUsers();
+      });
+    };
+
+    window.kullaniciSil = function(username) {
+      if (confirm(`${username} adlı kullanıcıyı kalıcı olarak silmek istediğine emin misin?`)) {
+        remove(ref(db, 'users/' + username)).then(() => {
+          alert("Kullanıcı silindi.");
+          fetchUsers();
+        });
+      }
+    };
+
+    window.talepSil = function(reqId) {
+      remove(ref(db, 'requests/' + reqId)).then(() => {
+        alert("Talep onaylandı ve listeden kaldırıldı.");
+        fetchRequests();
+      });
+    };
   </script>
 </body>
 </html>
