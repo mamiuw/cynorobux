@@ -7,71 +7,151 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="container" style="max-width: 1200px; padding: 20px 15px;">
+    
+    <!-- ÜST MENÜ / NAVBAR -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 30px;">
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <h2 style="font-size: 24px; font-weight: 800; color: #fff; margin: 0;">Cyno<span style="color: var(--roblox-green);">Robux</span></h2>
+        <div style="display: flex; gap: 15px;">
+          <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Ana Sayfa</a>
+          <a href="oyunlar.html" style="color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;">Oyunlar</a>
+          <a href="yatir.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Yatır</a>
+          <a href="cek.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Çek</a>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 12px; color: var(--text-muted);">Bakiye:</span>
+          <span id="live-bakiye" style="font-weight: 800; color: var(--roblox-green); font-size: 16px;">0 R$</span>
+        </div>
+        <div id="auth-buttons">
+          <!-- Oturum durumuna göre dinamik dolacak -->
+        </div>
+      </div>
+    </div>
+
     <div style="margin-bottom: 18px;">
       <a href="oyunlar.html" style="color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600;">← Oyunlara Dön</a>
     </div>
 
-    <div class="game-layout">
-      <div class="control-panel">
-        <h2 style="font-size: 20px; margin-bottom: 18px;">🪙 Robux Yazı-Tura</h2>
+    <div class="game-layout" style="display: grid; grid-template-columns: 350px 1fr; gap: 24px; align-items: center;">
+      <div class="control-panel" style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px;">
+        <h2 style="font-size: 20px; margin-bottom: 18px; color: #fff;">🪙 Robux Yazı-Tura</h2>
 
-        <div class="form-group">
-          <label>Yatırılacak Robux (R$)</label>
-          <input type="number" id="cf-bet" class="form-control" value="100" min="50">
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label style="font-size: 12px; color: var(--text-muted);">Yatırılacak Robux (R$)</label>
+          <input type="number" id="cf-bet" class="form-control" value="50" min="50" style="margin-top: 6px;">
         </div>
 
-        <div class="form-group">
-          <label>Tarafını Seç (1.85x Kazanç)</label>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button type="button" id="side-green" onclick="selectSide('green')" class="btn btn-primary">🟩 Yeşil Robux</button>
-            <button type="button" id="side-black" onclick="selectSide('black')" class="btn btn-outline">⬛ Siyah Blox</button>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label style="font-size: 12px; color: var(--text-muted);">Tarafını Seç (1.85x Kazanç)</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px;">
+            <button type="button" id="side-green" onclick="selectSide('green')" class="btn btn-primary" style="cursor: pointer;">🟩 Yeşil Robux</button>
+            <button type="button" id="side-black" onclick="selectSide('black')" class="btn btn-outline" style="cursor: pointer;">⬛ Siyah Blox</button>
           </div>
         </div>
 
-        <button onclick="flipCoin()" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; margin-top: 10px;">
+        <button onclick="flipCoin()" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; cursor: pointer;">
           🪙 Parayı At
         </button>
       </div>
 
-      <div class="arena-panel">
-        <div id="coin-visual" style="width: 130px; height: 130px; border-radius: 50%; background: linear-gradient(135deg, var(--roblox-green), var(--roblox-green-dark)); display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 800; color: #050807; box-shadow: 0 0 35px var(--roblox-green-glow); transition: transform 0.6s;">
+      <div class="arena-panel" style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px; text-align: center;">
+        <div id="coin-visual" style="width: 130px; height: 130px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, var(--roblox-green), #00b259); display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 800; color: #050807; box-shadow: 0 0 35px rgba(0,255,136,0.3); transition: transform 0.6s;">
           R$
         </div>
-        <h3 id="cf-status" style="font-size: 22px; margin-top: 24px;">Tarafını Seç ve Atış Yap</h3>
-        <p id="cf-sub" style="color: var(--text-muted); font-size: 14px; margin-top: 6px;">Doğru bilirsen yatırdığın Robux 1.85x katlanır! (%46 Kazanma Şansı)</p>
+        <h3 id="cf-status" style="font-size: 22px; margin-top: 24px; color: #fff;">Tarafını Seç ve Atış Yap</h3>
+        <p id="cf-sub" style="color: var(--text-muted); font-size: 14px; margin-top: 6px;">Doğru bilirsen yatırdığın Robux 1.85x katlanır!</p>
       </div>
     </div>
   </div>
 
-  <script src="app.js"></script>
-  <script>
-    renderLayout('oyunlar');
+  <!-- FIREBASE VE COINFLIP OYUN MANTIĞI -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
+      authDomain: "cynorobux.firebaseapp.com",
+      databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
+      projectId: "cynorobux",
+      storageBucket: "cynorobux.firebasestorage.app",
+      messagingSenderId: "854181611047",
+      appId: "1:854181611047:web:db37f6a281bca890d67002",
+      measurementId: "G-8PQFNEH1F3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
     let chosenSide = 'green';
     let flipping = false;
+    let currentBalance = 0;
+    let currentUser = null;
 
-    function selectSide(side) {
+    window.addEventListener('DOMContentLoaded', () => {
+      currentUser = localStorage.getItem('cynoUser');
+      const authContainer = document.getElementById('auth-buttons');
+      const bakiyeText = document.getElementById('live-bakiye');
+
+      if (!currentUser) {
+        bakiyeText.textContent = '0 R$';
+        authContainer.innerHTML = `
+          <a href="giris.html" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; text-decoration: none; margin-right: 8px;">Giriş Yap</a>
+          <a href="kayit.html" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; text-decoration: none;">Kayıt Ol</a>
+        `;
+        return;
+      }
+
+      // Firebase'den anlık bakiye çek
+      const userRef = ref(db, 'users/' + currentUser);
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          currentBalance = Number(userData.bakiye) || 0;
+          bakiyeText.textContent = currentBalance + ' R$';
+          localStorage.setItem('cynoBakiye', currentBalance);
+
+          authContainer.innerHTML = `
+            <span style="color: #fff; font-weight: 700; font-size: 13px; margin-right: 10px;">👤 ${currentUser}</span>
+            <button onclick="localStorage.removeItem('cynoUser'); window.location.reload();" class="btn btn-outline" style="padding: 5px 10px; font-size: 11px; border-color: #ff4b4b; color: #ff4b4b; cursor:pointer;">Çıkış</button>
+          `;
+        }
+      });
+    });
+
+    window.selectSide = function(side) {
       chosenSide = side;
       document.getElementById('side-green').className = side === 'green' ? 'btn btn-primary' : 'btn btn-outline';
       document.getElementById('side-black').className = side === 'black' ? 'btn btn-primary' : 'btn btn-outline';
-    }
+    };
 
-    function flipCoin() {
+    window.flipCoin = function() {
       if (flipping) return;
-      const user = AppState.getUser();
-      if (!user || !user.loggedIn) {
-        showToast('Oynamak için giriş yapmalısın!', true);
+      if (!currentUser) {
+        alert("Oynamak için giriş yapmalısın kanka!");
+        window.location.href = 'giris.html';
         return;
       }
+
       const bet = Number(document.getElementById('cf-bet').value);
-      if (bet < 50 || bet > user.balance) {
-        showToast('Geçersiz miktar veya yetersiz bakiye (Min: 50 R$)', true);
+      if (isNaN(bet) || bet < 50) {
+        alert("Minimum bahis tutarı 50 R$ olmalıdır!");
+        return;
+      }
+      if (currentBalance < bet) {
+        alert(`Yetersiz bakiye! Mevcut bakiyen: ${currentBalance} R$`);
         return;
       }
 
-      AppState.addBalance(-bet, 'Robux Yazı-Tura Bahis');
-      flipping = true;
+      // Bahis miktarını düş ve Firebase'e kaydet
+      currentBalance -= bet;
+      updateBakiyeInFirebase(currentBalance);
 
+      flipping = true;
       const coin = document.getElementById('coin-visual');
       coin.style.transform = 'rotateY(720deg) scale(1.1)';
       document.getElementById('cf-status').textContent = 'Para Dönüyor...';
@@ -79,7 +159,7 @@
       setTimeout(() => {
         coin.style.transform = 'rotateY(0deg) scale(1)';
         
-        // Slightly reduced win chance: 46% win rate
+        // %46 kazanma şansı
         const rand = Math.random();
         const result = rand < 0.46 ? chosenSide : (chosenSide === 'green' ? 'black' : 'green');
 
@@ -95,63 +175,24 @@
 
         if (result === chosenSide) {
           const win = Math.floor(bet * 1.85);
-          AppState.addBalance(win, 'Yazı-Tura Kazancı (1.85x)');
+          currentBalance += win;
+          updateBakiyeInFirebase(currentBalance);
+
           document.getElementById('cf-status').innerHTML = `<span style="color:var(--roblox-green);">Kazandın! +${win} R$</span>`;
-          showToast(`Tebrikler! +${win} R$ kazandın!`);
         } else {
-          document.getElementById('cf-status').innerHTML = `<span style="color:var(--danger);">Kaybettin! (${result === 'green' ? 'Yeşil Robux' : 'Siyah Blox'} geldi)</span>`;
-          showToast('Bu tur olmadı, tekrar dene!', true);
+          document.getElementById('cf-status').innerHTML = `<span style="color:#ff4b4b;">Kaybettin! (${result === 'green' ? 'Yeşil Robux' : 'Siyah Blox'} geldi)</span>`;
         }
         flipping = false;
       }, 650);
+    };
+
+    function updateBakiyeInFirebase(yeniBakiye) {
+      const userRef = ref(db, 'users/' + currentUser);
+      update(userRef, { bakiye: yeniBakiye }).then(() => {
+        document.getElementById('live-bakiye').textContent = yeniBakiye + ' R$';
+        localStorage.setItem('cynoBakiye', yeniBakiye);
+      });
     }
   </script>
-<!-- Oyunun kendi kodları burada biter -->
-    
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyCQSylUFCxkOcyZQwobbNnzcJX6QcEIQGs",
-        authDomain: "cynorobux.firebaseapp.com",
-        databaseURL: "https://cynorobux-default-rtdb.firebaseio.com",
-        projectId: "cynorobux",
-        storageBucket: "cynorobux.firebasestorage.app",
-        messagingSenderId: "854181611047",
-        appId: "1:854181611047:web:db37f6a281bca890d67002",
-        measurementId: "G-8PQFNEH1F3"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const db = getDatabase(app);
-
-      window.addEventListener('DOMContentLoaded', () => {
-        const currentUser = localStorage.getItem('cynoUser');
-        const authContainer = document.getElementById('auth-buttons') || document.querySelector('.nav-auth') || document.getElementById('user-info-area');
-        const bakiyeText = document.getElementById('live-bakiye') || document.getElementById('user-bakiye');
-
-        if (!currentUser) {
-          if (bakiyeText) bakiyeText.textContent = '0 R$';
-          return;
-        }
-
-        const userRef = ref(db, 'users/' + currentUser);
-        get(userRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            const userData = snapshot.val();
-            const guncelBakiye = userData.bakiye || 0;
-            
-            if (bakiyeText) bakiyeText.textContent = guncelBakiye + ' R$';
-            localStorage.setItem('cynoBakiye', guncelBakiye);
-
-            const userAdText = document.getElementById('username-display');
-            if (userAdText) userAdText.textContent = currentUser;
-          }
-        });
-      });
-    </script>
-  </body>
-</html>
 </body>
 </html>
