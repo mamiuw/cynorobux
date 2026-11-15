@@ -7,45 +7,69 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="container" style="max-width: 1200px; padding: 20px 15px;">
+    
+    <!-- ÜST MENÜ / NAVBAR -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 30px;">
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <h2 style="font-size: 24px; font-weight: 800; color: #fff; margin: 0;">Cyno<span style="color: var(--roblox-green);">Robux</span></h2>
+        <div style="display: flex; gap: 15px;">
+          <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Ana Sayfa</a>
+          <a href="oyunlar.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Oyunlar</a>
+          <a href="yatir.html" style="color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;">Robux Yatır</a>
+          <a href="cek.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Çek</a>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 12px; color: var(--text-muted);">Bakiye:</span>
+          <span id="live-bakiye" style="font-weight: 800; color: var(--roblox-green); font-size: 16px;">0 R$</span>
+        </div>
+        <div id="auth-buttons">
+          <!-- Oturum durumuna göre dinamik dolacak -->
+        </div>
+      </div>
+    </div>
+
     <div style="max-width: 780px; margin: 0 auto;">
       <div style="margin-bottom: 24px;">
         <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">ANINDA OTOMATİK SİSTEM</span>
-        <h1 style="font-size: 30px; font-weight: 800;">➕ Gamepass ile Robux Yatır (Min 50 R$)</h1>
-        <p style="color: var(--text-muted); margin-top: 6px;">Roblox hesabındaki Robux'ları CynoRobux Gamepass'leri ile anında yatır ve %8 bonus kazan.</p>
+        <h1 style="font-size: 30px; font-weight: 800; color: #fff;">➕ Gamepass ile Robux Yatır (Min 50 R$)</h1>
+        <p style="color: var(--text-muted); margin-top: 6px; font-size: 14px;">Roblox hesabındaki Robux'ları CynoRobux Gamepass'leri ile anında yatır ve %8 bonus kazan.</p>
       </div>
 
       <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; margin-bottom: 24px;">
-        <h3 style="font-size: 16px; margin-bottom: 16px;">1. Yatırım Miktarını Seç veya Kaydır</h3>
+        <h3 style="font-size: 16px; margin-bottom: 16px; color: #fff;">1. Yatırım Miktarını Seç veya Kaydır</h3>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px;">
-          <div class="stat-card" style="cursor: pointer; border-color: var(--roblox-green);" onclick="setDepositAmount(50)">
-            <div class="stat-label">STANDART MİN</div>
-            <div class="stat-value" style="color: var(--roblox-green);">50 R$</div>
+          <div class="stat-card" style="cursor: pointer; border-color: var(--roblox-green); background: rgba(0,0,0,0.3); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color);" onclick="setDepositAmount(50)">
+            <div class="stat-label" style="font-size: 11px; color: var(--text-muted);">STANDART MİN</div>
+            <div class="stat-value" style="color: var(--roblox-green); font-size: 20px; font-weight: 800; margin-top: 4px;">50 R$</div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+4 R$ Bonus</div>
           </div>
 
-          <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(250)">
-            <div class="stat-label">OYUNCU</div>
-            <div class="stat-value" style="color: var(--roblox-green);">250 R$</div>
+          <div class="stat-card" style="cursor: pointer; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color);" onclick="setDepositAmount(250)">
+            <div class="stat-label" style="font-size: 11px; color: var(--text-muted);">OYUNCU</div>
+            <div class="stat-value" style="color: var(--roblox-green); font-size: 20px; font-weight: 800; margin-top: 4px;">250 R$</div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+20 R$ Bonus</div>
           </div>
 
-          <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(1000)">
-            <div class="stat-label">PRO</div>
-            <div class="stat-value" style="color: var(--roblox-green);">1,000 R$</div>
+          <div class="stat-card" style="cursor: pointer; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color);" onclick="setDepositAmount(1000)">
+            <div class="stat-label" style="font-size: 11px; color: var(--text-muted);">PRO</div>
+            <div class="stat-value" style="color: var(--roblox-green); font-size: 20px; font-weight: 800; margin-top: 4px;">1,000 R$</div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+80 R$ Bonus</div>
           </div>
 
-          <div class="stat-card" style="cursor: pointer;" onclick="setDepositAmount(5000)">
-            <div class="stat-label">VIP DOMINUS</div>
-            <div class="stat-value" style="color: var(--roblox-green);">5,000 R$</div>
+          <div class="stat-card" style="cursor: pointer; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color);" onclick="setDepositAmount(5000)">
+            <div class="stat-label" style="font-size: 11px; color: var(--text-muted);">VIP DOMINUS</div>
+            <div class="stat-value" style="color: var(--roblox-green); font-size: 20px; font-weight: 800; margin-top: 4px;">5,000 R$</div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">+400 R$ Bonus</div>
           </div>
         </div>
 
         <div class="form-group" style="margin-bottom: 20px;">
-          <label>Esnek Kaydırma / Miktar Seçici (Min: 50 R$ - Max: 25,000 R$)</label>
+          <label style="font-size: 12px; color: var(--text-muted);">Esnek Kaydırma / Miktar Seçici (Min: 50 R$ - Max: 25,000 R$)</label>
           <div style="display: flex; gap: 14px; align-items: center; margin-top: 8px;">
             <input type="range" id="deposit-slider" min="50" max="25000" step="10" value="50" style="flex: 1; accent-color: var(--roblox-green); cursor: pointer;" oninput="onSliderChange(this.value)">
             <input type="number" id="deposit-input" min="50" max="25000" value="50" class="form-control" style="width: 130px;" oninput="onInputChange(this.value)">
@@ -53,53 +77,23 @@
           </div>
         </div>
 
-        <h3 style="font-size: 16px; margin-bottom: 12px;">2. Gamepass Bağlantısı ve Talep Oluştur</h3>
-        <div style="background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; margin-bottom: 18px;">
+        <h3 style="font-size: 16px; margin-bottom: 12px; color: #fff;">2. Gamepass Bağlantısı ve Talep Oluştur</h3>
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; margin-bottom: 18px;">
           <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">GAMEPASS LİNKİ</div>
           <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <input type="text" id="gp-link" class="form-control" value="https://www.roblox.com/game-pass/50/Cyno-Custom-Pass" readonly style="flex: 1;">
-            <a href="https://www.roblox.com/develop" target="_blank" class="btn btn-outline">Roblox'ta Aç ↗</a>
+            <a href="https://www.roblox.com/develop" target="_blank" class="btn btn-outline" style="text-decoration: none; padding: 8px 14px; font-size: 13px;">Roblox'ta Aç ↗</a>
           </div>
         </div>
 
-        <button onclick="submitDepositRequest()" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15px;">
+        <button onclick="submitDepositRequest()" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15px; cursor: pointer;">
           ✅ Gamepass Satın Aldım — <span id="selected-amt-text">50</span> R$ Talep Gönder
         </button>
       </div>
     </div>
   </div>
 
-  <script src="app.js"></script>
-  <script>
-    renderLayout('yatir');
-    let currentAmt = 50;
-
-    function setDepositAmount(amt) {
-      currentAmt = amt;
-      document.getElementById('deposit-slider').value = amt;
-      document.getElementById('deposit-input').value = amt;
-      document.getElementById('selected-amt-text').textContent = amt;
-      document.getElementById('gp-link').value = `https://www.roblox.com/game-pass/${amt}/Cyno-Pass-${amt}`;
-    }
-
-    function onSliderChange(val) {
-      currentAmt = Number(val);
-      document.getElementById('deposit-input').value = val;
-      document.getElementById('selected-amt-text').textContent = val;
-      document.getElementById('gp-link').value = `https://www.roblox.com/game-pass/${val}/Cyno-Pass-${val}`;
-    }
-
-    function onInputChange(val) {
-      let num = Number(val);
-      if (num < 50) num = 50;
-      if (num > 25000) num = 25000;
-      currentAmt = num;
-      document.getElementById('deposit-slider').value = num;
-      document.getElementById('selected-amt-text').textContent = num;
-      document.getElementById('gp-link').value = `https://www.roblox.com/game-pass/${num}/Cyno-Pass-${num}`;
-    }
-  </script>
-
+  <!-- FIREBASE VE YATIRIM MANTIĞI -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, get, update, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -118,8 +112,67 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    let currentAmt = 50;
+    let currentUser = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      currentUser = localStorage.getItem('cynoUser');
+      const authContainer = document.getElementById('auth-buttons');
+      const bakiyeText = document.getElementById('live-bakiye');
+
+      if (!currentUser) {
+        if (bakiyeText) bakiyeText.textContent = '0 R$';
+        authContainer.innerHTML = `
+          <a href="giris.html" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; text-decoration: none; margin-right: 8px;">Giriş Yap</a>
+          <a href="kayit.html" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; text-decoration: none;">Kayıt Ol</a>
+        `;
+        return;
+      }
+
+      // Firebase'den anlık bakiye çek
+      const userRef = ref(db, 'users/' + currentUser);
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          const guncelBakiye = Number(userData.bakiye) || 0;
+          
+          if (bakiyeText) bakiyeText.textContent = guncelBakiye + ' R$';
+          localStorage.setItem('cynoBakiye', guncelBakiye);
+
+          authContainer.innerHTML = `
+            <span style="color: #fff; font-weight: 700; font-size: 13px; margin-right: 10px;">👤 ${currentUser}</span>
+            <button onclick="localStorage.removeItem('cynoUser'); window.location.reload();" class="btn btn-outline" style="padding: 5px 10px; font-size: 11px; border-color: #ff4b4b; color: #ff4b4b; cursor:pointer;">Çıkış</button>
+          `;
+        }
+      });
+    });
+
+    window.setDepositAmount = function(amt) {
+      currentAmt = amt;
+      document.getElementById('deposit-slider').value = amt;
+      document.getElementById('deposit-input').value = amt;
+      document.getElementById('selected-amt-text').textContent = amt;
+      document.getElementById('gp-link').value = `https://www.roblox.com/game-pass/${amt}/Cyno-Pass-${amt}`;
+    };
+
+    window.onSliderChange = function(val) {
+      currentAmt = Number(val);
+      document.getElementById('deposit-input').value = val;
+      document.getElementById('selected-amt-text').textContent = val;
+      document.getElementById('gp-link').value = `https://www.roblox.com/game-pass/${val}/Cyno-Pass-${val}`;
+    };
+
+    window.onInputChange = function(val) {
+      let num = Number(val);
+      if (num < 50) num = 50;
+      if (num > 25000) num = 25000;
+      currentAmt = num;
+      document.getElementById('deposit-slider').value = num;
+      document.getElementById('selected-amt-text').textContent = num;
+      document.getElementById('gp-link').value = `https://www.roblox.com/game-pass/${num}/Cyno-Pass-${num}`;
+    };
+
     window.submitDepositRequest = function() {
-      const currentUser = localStorage.getItem('cynoUser');
       if (!currentUser) {
         alert("Önce giriş yapmalısın kanka!");
         window.location.href = "giris.html";
@@ -128,7 +181,6 @@
 
       const bonus = Math.floor(currentAmt * 0.08);
       const totalAdd = currentAmt + bonus;
-
       const userRef = ref(db, 'users/' + currentUser);
 
       get(userRef).then((snapshot) => {
@@ -142,7 +194,6 @@
 
         // Kullanıcının bakiyesini güncelle
         update(userRef, { bakiye: yeniBakiye }).then(() => {
-          // LocalStorage güncelle
           localStorage.setItem('cynoBakiye', yeniBakiye);
 
           // Yatırım talebini Firebase'e log olarak kaydet
