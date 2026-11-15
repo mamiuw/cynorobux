@@ -7,16 +7,40 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="container" style="max-width: 1200px; padding: 20px 15px;">
+    
+    <!-- ÜST MENÜ / NAVBAR -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 30px;">
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <h2 style="font-size: 24px; font-weight: 800; color: #fff; margin: 0;">Cyno<span style="color: var(--roblox-green);">Robux</span></h2>
+        <div style="display: flex; gap: 15px;">
+          <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Ana Sayfa</a>
+          <a href="oyunlar.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Oyunlar</a>
+          <a href="yatir.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px;">Robux Yatır</a>
+          <a href="cek.html" style="color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;">Robux Çek</a>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 12px; color: var(--text-muted);">Bakiye:</span>
+          <span id="live-bakiye" style="font-weight: 800; color: var(--roblox-green); font-size: 16px;">0 R$</span>
+        </div>
+        <div id="auth-buttons">
+          <!-- Oturum durumuna göre dinamik dolacak -->
+        </div>
+      </div>
+    </div>
+
     <div style="max-width: 780px; margin: 0 auto;">
       <div style="margin-bottom: 24px;">
         <span class="official-badge" style="margin-bottom: 8px; display: inline-block;">ANINDA TRANSFER</span>
-        <h1 style="font-size: 30px; font-weight: 800;">💸 Robux Çek (Min 50 R$)</h1>
-        <p style="color: var(--text-muted); margin-top: 6px;">Hesabındaki bakiyeyi Roblox Gamepass veya grup yoluyla cüzdanına çek.</p>
+        <h1 style="font-size: 30px; font-weight: 800; color: #fff;">💸 Robux Çek (Min 50 R$)</h1>
+        <p style="color: var(--text-muted); margin-top: 6px; font-size: 14px;">Hesabındaki bakiyeyi Roblox Gamepass veya grup yoluyla cüzdanına çek.</p>
       </div>
 
       <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; margin-bottom: 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-dark); padding: 18px 22px; border-radius: 14px; border: 1px solid var(--border-color); margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 18px 22px; border-radius: 14px; border: 1px solid var(--border-color); margin-bottom: 24px;">
           <div>
             <div style="font-size: 13px; color: var(--text-muted);">Mevcut Bakiyen</div>
             <div id="user-bakiye-text" style="font-size: 24px; font-weight: 800; color: var(--roblox-green); margin-top: 2px;">0 R$</div>
@@ -28,38 +52,24 @@
         </div>
 
         <div class="form-group" style="margin-bottom: 18px;">
-          <label>Roblox Kullanıcı Adın *</label>
-          <input type="text" id="withdraw-username" class="form-control" placeholder="Örn: AhmetBlox_TR" required>
+          <label style="font-size: 12px; color: var(--text-muted);">Roblox Kullanıcı Adın *</label>
+          <input type="text" id="withdraw-username" class="form-control" placeholder="Örn: AhmetBlox_TR" required style="margin-top: 6px;">
         </div>
 
         <div class="form-group" style="margin-bottom: 20px;">
-          <label>Çekilecek Miktar (R$) *</label>
-          <input type="number" id="withdraw-amount" min="50" max="25000" value="50" class="form-control" placeholder="Min 50 R$" required>
+          <label style="font-size: 12px; color: var(--text-muted);">Çekilecek Miktar (R$) *</label>
+          <input type="number" id="withdraw-amount" min="50" max="25000" value="50" class="form-control" placeholder="Min 50 R$" required style="margin-top: 6px;">
           <small style="color: var(--text-muted); font-size: 11px; display: block; margin-top: 6px;">Minimum çekim tutarı 50 R$'dır.</small>
         </div>
 
-        <button onclick="submitWithdrawRequest()" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15px;">
+        <button onclick="submitWithdrawRequest()" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 15px; cursor: pointer;">
           🚀 Çekim Talebi Oluştur
         </button>
       </div>
     </div>
   </div>
 
-  <script src="app.js"></script>
-  <script>
-    renderLayout('cikis');
-
-    // Sayfa açıldığında kullanıcının güncel bakiyesini göster
-    window.addEventListener('DOMContentLoaded', () => {
-      const currentUser = localStorage.getItem('cynoUser');
-      const currentBakiye = localStorage.getItem('cynoBakiye') || 0;
-      if (currentUser) {
-        document.getElementById('withdraw-username').value = currentUser;
-        document.getElementById('user-bakiye-text').textContent = currentBakiye + ' R$';
-      }
-    });
-  </script>
-
+  <!-- FIREBASE VE ÇEKİM MANTIĞI -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, get, update, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -78,8 +88,47 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    let currentBalance = 0;
+    let currentUser = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      currentUser = localStorage.getItem('cynoUser');
+      const authContainer = document.getElementById('auth-buttons');
+      const bakiyeText = document.getElementById('live-bakiye');
+      const userBakiyeText = document.getElementById('user-bakiye-text');
+
+      if (!currentUser) {
+        if (bakiyeText) bakiyeText.textContent = '0 R$';
+        if (userBakiyeText) userBakiyeText.textContent = '0 R$';
+        authContainer.innerHTML = `
+          <a href="giris.html" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; text-decoration: none; margin-right: 8px;">Giriş Yap</a>
+          <a href="kayit.html" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; text-decoration: none;">Kayıt Ol</a>
+        `;
+        return;
+      }
+
+      // Firebase'den anlık bakiye çek
+      const userRef = ref(db, 'users/' + currentUser);
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          currentBalance = Number(userData.bakiye) || 0;
+          
+          if (bakiyeText) bakiyeText.textContent = currentBalance + ' R$';
+          if (userBakiyeText) userBakiyeText.textContent = currentBalance + ' R$';
+          
+          document.getElementById('withdraw-username').value = currentUser;
+          localStorage.setItem('cynoBakiye', currentBalance);
+
+          authContainer.innerHTML = `
+            <span style="color: #fff; font-weight: 700; font-size: 13px; margin-right: 10px;">👤 ${currentUser}</span>
+            <button onclick="localStorage.removeItem('cynoUser'); window.location.reload();" class="btn btn-outline" style="padding: 5px 10px; font-size: 11px; border-color: #ff4b4b; color: #ff4b4b; cursor:pointer;">Çıkış</button>
+          `;
+        }
+      });
+    });
+
     window.submitWithdrawRequest = function() {
-      const currentUser = localStorage.getItem('cynoUser');
       if (!currentUser) {
         alert("Önce giriş yapmalısın kanka!");
         window.location.href = "giris.html";
@@ -99,43 +148,31 @@
         return;
       }
 
+      if (currentBalance < miktar) {
+        alert(`Yetersiz bakiye! Mevcut bakiyen: ${currentBalance} R$`);
+        return;
+      }
+
+      const yeniBakiye = currentBalance - miktar;
       const userRef = ref(db, 'users/' + currentUser);
 
-      get(userRef).then((snapshot) => {
-        if (!snapshot.exists()) {
-          alert("Kullanıcı veritabanında bulunamadı!");
-          return;
-        }
+      // Kullanıcının bakiyesini düşür ve güncelle
+      update(userRef, { bakiye: yeniBakiye }).then(() => {
+        localStorage.setItem('cynoBakiye', yeniBakiye);
 
-        const userData = snapshot.val();
-        const mevcutBakiye = Number(userData.bakiye) || 0;
-
-        if (mevcutBakiye < miktar) {
-          alert(`Yetersiz bakiye! Mevcut bakiyen: ${mevcutBakiye} R$`);
-          return;
-        }
-
-        const yeniBakiye = mevcutBakiye - miktar;
-
-        // Kullanıcının bakiyesini düşür ve güncelle
-        update(userRef, { bakiye: yeniBakiye }).then(() => {
-          // LocalStorage güncelle
-          localStorage.setItem('cynoBakiye', yeniBakiye);
-
-          // Çekim talebini Firebase'e log olarak kaydet (Admin paneli görsün)
-          const requestsRef = ref(db, 'requests');
-          const yeniTalepRef = push(requestsRef);
-          set(yeniTalepRef, {
-            username: currentUser,
-            tur: 'Çekim',
-            detay: `${robloxUser} hesabına ${miktar} R$ Çekim Talebi`,
-            tutar: miktar,
-            tarih: new Date().toISOString()
-          });
-
-          alert(`Çekim talebin başarıyla alındı! ${miktar} R$ bakiyeden düşüldü 🎉`);
-          window.location.reload();
+        // Çekim talebini Firebase'e log olarak kaydet (Admin paneli görsün)
+        const requestsRef = ref(db, 'requests');
+        const yeniTalepRef = push(requestsRef);
+        set(yeniTalepRef, {
+          username: currentUser,
+          tur: 'Çekim',
+          detay: `${robloxUser} hesabına ${miktar} R$ Çekim Talebi`,
+          tutar: miktar,
+          tarih: new Date().toISOString()
         });
+
+        alert(`Çekim talebin başarıyla alındı! ${miktar} R$ bakiyeden düşüldü 🎉`);
+        window.location.reload();
       }).catch((error) => {
         console.error("Çekim hatası:", error);
         alert("İşlem sırasında bir hata oluştu.");
