@@ -163,7 +163,7 @@
         return;
       }
 
-      // Çekim talebini Firebase'e Bekliyor statüsüyle kaydet (Bakiyeden hemen düşmez, admin onaylayınca düşer)
+      // Çekim talebini Firebase'e Bekliyor statüsüyle kaydet
       const requestsRef = ref(db, 'requests');
       const yeniTalepRef = push(requestsRef);
 
@@ -172,7 +172,7 @@
         tur: 'Çekim',
         detay: `${robloxUser} hesabına ${miktar} R$ Çekim Talebi`,
         tutar: miktar,
-        durum: 'Bekliure' / 'Bekliyor', // Bekliyor
+        durum: 'Bekliyor',
         tarih: new Date().toISOString()
       }).then(() => {
         showModal("Çekim Talebi Alındı!", `${miktar} R$ tutarındaki çekim talebin admin paneline iletildi. Kontrol edildikten sonra gönderilecektir!`, "💸");
